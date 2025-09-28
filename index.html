@@ -1,0 +1,2654 @@
+                <!-- Fatura Page -->
+                <div id="faturaPage" class="page">
+                    <div class="glass-card">
+                        <button class="back-btn" onclick="TH.showPage('homePage')">← Voltar</button>
+                        <h2 class="page-title">Pagamento de Fatura</h2>
+                        <p class="page-subtitle">35% de desconto em todas as faturas</p>
+
+                        <div class="form-group">
+                            <label class="form-label">Operadora</label>
+                            <select class="form-select" id="faturaOperadora">
+                                <option value="">Selecione a operadora</option>
+                                <option value="tim">TIM</option>
+                                <option value="claro">Claro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Número da Linha</label>
+                            <input type="tel" class="form-input" id="faturaNumber" placeholder="(11) 99999-9999" maxlength="15">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Senha da Conta</label>
+                            <input type="password" class="form-input" id="faturaPassword" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Valor da Fatura (R$)</label>
+                            <input type="number" class="form-input" id="faturaValue" step="0.01" min="10" required>
+                        </div>
+
+                        <div class="pix-section hidden" id="faturaDiscount">
+                            <h3>💰 Desconto Aplicado!</h3>
+                            <p>Valor original: <span id="originalValue"></span></p>
+                            <p>Desconto (35%): <span id="discountValue"></span></p>
+                            <p><strong>Valor final: <span id="finalValue"></span></strong></p>
+                        </div>
+
+                        <button class="btn-primary" onclick="TH.calculateDiscount()">
+                            Calcular Desconto e Pagar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dados Page -->
+                <div id="dadosPage" class="page">
+                    <div class="glass-card">
+                        <button class="back-btn" onclick="TH.showPage('homePage')">← Voltar</button>
+                        <h2 class="page-title">Meus Dados</h2>
+                        <p class="page-subtitle">Informações da sua conta</p>
+
+                        <div id="userInfo">
+                            <!-- User info will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIX Payment Page -->
+                <div id="pixPage" class="page">
+                    <div class="glass-card">
+                        <button class="back-btn" onclick="TH.goBackFromPix()">← Voltar</button>
+                        <h2 class="page-title">Pagamento via PIX</h2>
+                        <p class="page-subtitle">Finalize sua compra</p>
+
+                        <div id="paymentSummary">
+                            <!-- Payment summary will be populated here -->
+                        </div>
+
+                        <div class="pix-section">
+                            <h3>🔑 Chave PIX</h3>
+                            <div class="pix-key" id="pixKey">e0478dfb-0f3b-4837-977c-bc3a23622854</div>
+                            <button class="btn-primary" onclick="TH.copyPixKey()">Copiar Chave PIX</button>
+                        </div>
+
+                        <div id="timerSection" class="hidden">
+                            <div class="timer" id="countdown">01:30</div>
+                            <p>Tempo restante para enviar o comprovante</p>
+                        </div>
+
+                        <div id="receiptSection" class="hidden">
+                            <h3>📎 Enviar Comprovante</h3>
+                            <div class="file-upload">
+                                <input type="file" id="receiptFile" accept="image/*,application/pdf" onchange="TH.previewReceipt()">
+                                <label for="receiptFile" class="file-upload-label">
+                                    📎 Clique para selecionar o comprovante
+                                    <br><small>Formatos aceitos: JPG, PNG, PDF</small>
+                                </label>
+                            </div>
+                            <div id="receiptPreview" class="hidden">
+                                <img id="receiptImg" style="max-width: 100%; margin-top: 15px; border-radius: 8px;">
+                            </div>
+                            <button class="btn-primary" id="sendReceiptBtn" onclick="TH.sendReceipt()" disabled>
+                                Enviar Comprovante
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="screen no-context">
+            <div class="app-header">
+                <div class="container">
+                    <div class="app-logo">TH STORE - Admin</div>
+                    <div class="user-info">
+                        <span>Administrador</span>
+                        <button class="logout-btn" id="adminLogoutBtn">Sair</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container" style="padding-top: 40px;">
+                <div class="glass-card">
+                    <h1 class="page-title">Painel Administrativo</h1>
+                    <p class="page-subtitle">Controle total do sistema</p>
+                    
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">Usuários Cadastrados</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalTransactions">0</div>
+                            <div class="stat-label">Total de Transações</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="pendingTransactions">0</div>
+                            <div class="stat-label">Transações Pendentes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalRevenue">R$ 0,00</div>
+                            <div class="stat-label">Receita Total</div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" id="transactionsTabBtn">💳 Transações</div>
+                        <div class="tab" id="usersTabBtn">👥 Usuários</div>
+                        <div class="tab" id="loginLogsTabBtn">📊 Logs</div>
+                        <div class="tab" id="settingsTabBtn">⚙️ Config</div>
+                    </div>
+
+                    <!-- Transactions Tab -->
+                    <div id="transactionsTab" class="form-section active">
+                        <h3>Histórico de Transações</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Email</th>
+                                        <th>Tipo</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                        <th>Data</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsTableBody">
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                                            Nenhuma transação registrada ainda
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Users Tab -->
+                    <div id="usersTab" class="form-section">
+                        <h3>Usuários Cadastrados</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Telefone</th>
+                                        <th>Cadastro</th>
+                                        <th>Último Login</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                                            Nenhum usuário cadastrado ainda
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Login Logs Tab -->
+                    <div id="loginLogsTab" class="form-section">
+                        <h3>Logs de Login</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuário</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Data/Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="loginLogsTableBody">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                                            Nenhum log registrado ainda
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settingsTab" class="form-section">
+                        <h3>Configurações do Sistema</h3>
+                        <div style="max-width: 500px; margin-top: 20px;">
+                            <div class="form-group">
+                                <label class="form-label">Chave PIX</label>
+                                <input type="text" class="form-input" id="pixKeyAdmin" value="e0478dfb-0f3b-4837-977c-bc3a23622854" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status do Sistema</label>
+                                <select class="form-select" id="systemStatusSelect">
+                                    <option value="online">🟢 Online</option>
+                                    <option value="maintenance">🔴 Manutenção</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" id="saveSettingsBtn" style="width: auto;">
+                                Salvar Configurações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Warning Modal -->
+        <div id="securityWarning" class="security-warning">
+            <div class="security-message">
+                <div class="security-icon">🚨</div>
+                <div class="security-title">ACESSO NEGADO</div>
+                <div class="security-text">
+                    Tentativa de acesso não autorizada detectada.<br>
+                    O painel administrativo está protegido contra ferramentas de desenvolvedor.
+                </div>
+                <button class="btn-primary" onclick="TH.security.closeWarning()" style="width: auto;">
+                    Entendido
+                </button>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div id="notification" class="notification">
+            <div class="notification-content">
+                <span class="notification-icon" id="notificationIcon">✅</span>
+                <span class="notification-text" id="notificationText">Mensagem</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===========================================
+        // TH STORE SYSTEM - VERSÃO CORRIGIDA
+        // ===========================================
+        
+        const TH = {
+            // Estado da aplicação
+            currentUser: null,
+            currentSession: null,
+            currentPlan: null,
+            currentService: null,
+            pixTimer: null,
+            
+            // Constantes de segurança
+            ADMIN_PASSWORD: 'TH@Store2024#Premium!Security$99',
+            PIX_KEY: 'e0478dfb-0f3b-4837-977c-bc3a23622854',
+            
+            // Sistema de segurança
+            security: {
+                devToolsOpen: false,
+                warningShown: false,
+                adminProtected: false,
+                
+                init() {
+                    console.log('🔒 Inicializando sistema de segurança...');
+                    this.setupDevToolsDetection();
+                    this.setupKeyboardProtection();
+                    this.setupContextMenuProtection();
+                    this.setupConsoleProtection();
+                    this.setupSourceProtection();
+                    console.log('✅ Sistema de segurança ativo!');
+                },
+                
+                setupDevToolsDetection() {
+                    // Detecta F12 e outras teclas de desenvolvedor
+                    document.addEventListener('keydown', (e) => {
+                        // F12
+                        if (e.keyCode === 123) {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('F12 bloqueado');
+                            return false;
+                        }
+                        
+                        // Ctrl+Shift+I (DevTools)
+                        if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('DevTools bloqueado');
+                            return false;
+                        }
+                        
+                        // Ctrl+Shift+J (Console)
+                        if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('Console bloqueado');
+                            return false;
+                        }
+                        
+                        // Ctrl+Shift+C (Element inspector)
+                        if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('Inspetor bloqueado');
+                            return false;
+                        }
+                        
+                        // Ctrl+U (View source)
+                        if (e.ctrlKey && e.keyCode === 85) {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('Código fonte protegido');
+                            return false;
+                        }
+                        
+                        // Ctrl+S (Save page)
+                        if (e.ctrlKey && e.keyCode === 83) {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('Download bloqueado');
+                            return false;
+                        }
+                    });
+                },
+                
+                setupKeyboardProtection() {
+                    // Detecta tentativas de abrir DevTools
+                    document.addEventListener('keydown', (e) => {
+                        if (TH.currentSession && TH.currentSession.userType === 'admin') {
+                            // Proteção adicional no painel admin
+                            if (e.key === 'F12' || 
+                                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                                (e.ctrlKey && e.key === 'u')) {
+                                e.preventDefault();
+                                this.triggerSecurityWarning('Painel Admin protegido');
+                                this.lockAdminPanel();
+                                return false;
+                            }
+                        }
+                    });
+                },
+                
+                setupContextMenuProtection() {
+                    // Desabilita menu de contexto (clique direito)
+                    document.addEventListener('contextmenu', (e) => {
+                        if (TH.currentSession && TH.currentSession.userType === 'admin') {
+                            e.preventDefault();
+                            this.triggerSecurityWarning('Menu de contexto bloqueado');
+                            return false;
+                        }
+                    });
+                },
+                
+                setupConsoleProtection() {
+                    // Detecta se DevTools está aberto
+                    setInterval(() => {
+                        const startTime = performance.now();
+                        debugger;
+                        const endTime = performance.now();
+                        
+                        if (endTime - startTime > 100) {
+                            if (!this.devToolsOpen && TH.currentSession && TH.currentSession.userType === 'admin') {
+                                this.devToolsOpen = true;
+                                this.triggerSecurityWarning('DevTools detectado');
+                                this.lockAdminPanel();
+                            }
+                        } else {
+                            this.devToolsOpen = false;
+                        }
+                    }, 1000);
+                },
+                
+                setupSourceProtection() {
+                    // Ofusca console
+                    if (typeof console !== 'undefined') {
+                        console.log = function() {};
+                        console.warn = function() {};
+                        console.error = function() {};
+                        console.info = function() {};
+                        console.debug = function() {};
+                    }
+                    
+                    // Detecta tentativas de debugger
+                    Object.defineProperty(window, 'console', {
+                        get() {
+                            if (TH.currentSession && TH.currentSession.userType === 'admin') {
+                                TH.security.triggerSecurityWarning('Console bloqueado');
+                                return {};
+                            }
+                            return console;
+                        }
+                    });
+                },
+                
+                triggerSecurityWarning(reason) {
+                    console.log('🚨 Violação de segurança:', reason);
+                    
+                    if (!this.warningShown) {
+                        this.warningShown = true;
+                        document.getElementById('securityWarning').classList.add('active');
+                        
+                        // Auto-close após 5 segundos
+                        setTimeout(() => {
+                            this.closeWarning();
+                        }, 5000);
+                    }
+                },
+                
+                lockAdminPanel() {
+                    if (TH.currentSession && TH.currentSession.userType === 'admin') {
+                        document.getElementById('adminPanel').classList.add('admin-locked');
+                        this.adminProtected = true;
+                        
+                        // Força logout após 3 segundos
+                        setTimeout(() => {
+                            TH.showNotification('Sessão encerrada por violação de segurança', 'error');
+                            TH.logout();
+                        }, 3000);
+                    }
+                },
+                
+                closeWarning() {
+                    document.getElementById('securityWarning').classList.remove('active');
+                    this.warningShown = false;
+                },
+                
+                validateAdminPassword(password) {
+                    // Verificação de força da senha
+                    const hasUpperCase = /[A-Z]/.test(password);
+                    const hasLowerCase = /[a-z]/.test(password);
+                    const hasNumbers = /\d/.test(password);
+                    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                    const hasMinLength = password.length >= 20;
+                    
+                    return password === TH.ADMIN_PASSWORD && 
+                           hasUpperCase && hasLowerCase && 
+                           hasNumbers && hasSpecialChar && hasMinLength;
+                },
+                
+                encryptData(data) {
+                    // Simples ofuscação (em produção usar crypto real)
+                    return btoa(JSON.stringify(data)).split('').reverse().join('');
+                },
+                
+                decryptData(encryptedData) {
+                    try {
+                        return JSON.parse(atob(encryptedData.split('').reverse().join('')));
+                    } catch {
+                        return null;
+                    }
+                }
+            },
+            
+            // ===========================================
+            // DATABASE SYSTEM
+            // ===========================================
+            
+            db: {
+                users: [],
+                sessions: [],
+                loginLogs: [],
+                transactionLogs: [],
+                settings: {},
+                
+                init() {
+                    console.log('🔄 Inicializando banco de dados...');
+                    
+                    this.users = this.loadData('th_store_users', []);
+                    this.sessions = this.loadData('th_store_sessions', []);
+                    this.loginLogs = this.loadData('th_store_login_logs', []);
+                    this.transactionLogs = this.loadData('th_store_transaction_logs', []);
+                    this.settings = this.loadData('th_store_settings', {
+                        adminPassword: TH.ADMIN_PASSWORD,
+                        systemStatus: 'online',
+                        pixKey: TH.PIX_KEY
+                    });
+                    
+                    this.cleanupSessions();
+                    console.log('✅ Banco de dados inicializado!');
+                },
+                
+                loadData(key, defaultValue) {
+                    try {
+                        const data = localStorage.getItem(key);
+                        return data ? JSON.parse(data) : defaultValue;
+                    } catch (error) {
+                        console.error(`❌ Erro ao carregar ${key}:`, error);
+                        return defaultValue;
+                    }
+                },
+                
+                saveData(key, data) {
+                    try {
+                        localStorage.setItem(key, JSON.stringify(data));
+                        return true;
+                    } catch (error) {
+                        console.error(`❌ Erro ao salvar ${key}:`, error);
+                        return false;
+                    }
+                },
+                
+                saveAll() {
+                    this.saveData('th_store_users', this.users);
+                    this.saveData('th_store_sessions', this.sessions);
+                    this.saveData('th_store_login_logs', this.loginLogs);
+                    this.saveData('th_store_transaction_logs', this.transactionLogs);
+                    this.saveData('th_store_settings', this.settings);
+                },
+                
+                generateId() {
+                    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+                },
+                
+                createUser(userData) {
+                    const user = {
+                        id: this.generateId(),
+                        nome: userData.nome,
+                        email: userData.email.toLowerCase(),
+                        telefone: userData.telefone,
+                        senha: userData.senha,
+                        createdAt: new Date().toISOString(),
+                        lastLogin: null,
+                        loginCount: 0,
+                        status: 'active'
+                    };
+                    
+                    this.users.push(user);
+                    this.saveAll();
+                    return user;
+                },
+                
+                findUserByEmail(email) {
+                    return this.users.find(user => user.email === email.toLowerCase());
+                },
+                
+                validateUser(email, senha) {
+                    const user = this.findUserByEmail(email);
+                    return user && user.senha === senha ? user : null;
+                },
+                
+                createSession(userId, userType = 'user') {
+                    const session = {
+                        id: this.generateId(),
+                        userId,
+                        userType,
+                        createdAt: new Date().toISOString(),
+                        lastActivity: new Date().toISOString(),
+                        isActive: true
+                    };
+                    
+                    this.sessions.push(session);
+                    this.cleanupSessions();
+                    this.saveAll();
+                    return session;
+                },
+                
+                cleanupSessions() {
+                    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+                    this.sessions = this.sessions.filter(session => 
+                        session.lastActivity > oneHourAgo && session.isActive
+                    );
+                },
+                
+                logLogin(userId, success, userType = 'user') {
+                    const log = {
+                        id: this.generateId(),
+                        userId,
+                        userType,
+                        success,
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent
+                    };
+                    
+                    this.loginLogs.push(log);
+                    
+                    if (success && userType === 'user') {
+                        const user = this.users.find(u => u.id === userId);
+                        if (user) {
+                            user.lastLogin = new Date().toISOString();
+                            user.loginCount = (user.loginCount || 0) + 1;
+                        }
+                    }
+                    
+                    this.saveAll();
+                    return log;
+                },
+                
+                logTransaction(transactionData) {
+                    const transaction = {
+                        id: this.generateId(),
+                        userId: transactionData.userId,
+                        userName: transactionData.userName,
+                        userEmail: transactionData.userEmail,
+                        userPhone: transactionData.userPhone,
+                        type: transactionData.type,
+                        service: transactionData.service,
+                        amount: transactionData.amount,
+                        bonus: transactionData.bonus || null,
+                        targetNumber: transactionData.targetNumber,
+                        operadora: transactionData.operadora || null,
+                        originalValue: transactionData.originalValue || null,
+                        discount: transactionData.discount || null,
+                        planDetails: transactionData.planDetails || null,
+                        status: 'pending',
+                        timestamp: new Date().toISOString(),
+                        paymentMethod: 'pix'
+                    };
+                    
+                    this.transactionLogs.push(transaction);
+                    this.saveAll();
+                    return transaction;
+                },
+                
+                updateTransactionStatus(transactionId, status, receiptData = null) {
+                    const transaction = this.transactionLogs.find(t => t.id === transactionId);
+                    if (transaction) {
+                        transaction.status = status;
+                        if (receiptData) {
+                            transaction.receiptData = receiptData;
+                            transaction.receiptUploadedAt = new Date().toISOString();
+                        }
+                        if (status === 'completed') {
+                            transaction.completedAt = new Date().toISOString();
+                        }
+                        this.saveAll();
+                    }
+                    return transaction;
+                },
+                
+                getStats() {
+                    const now = new Date();
+                    const onlineThreshold = new Date(now.getTime() - 30 * 60 * 1000);
+                    
+                    return {
+                        totalUsers: this.users.length,
+                        totalTransactions: this.transactionLogs.length,
+                        pendingTransactions: this.transactionLogs.filter(t => t.status === 'pending').length,
+                        completedTransactions: this.transactionLogs.filter(t => t.status === 'completed').length,
+                        totalRevenue: this.transactionLogs
+                            .filter(t => t.status === 'completed')
+                            .reduce((sum, t) => sum + t.amount, 0),
+                        onlineUsers: this.sessions.filter(session => 
+                            session.isActive && new Date(session.lastActivity) > onlineThreshold
+                        ).length
+                    };
+                }
+            },
+            
+            // ===========================================
+            // UTILITY FUNCTIONS
+            // ===========================================
+            
+            formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value || 0);
+            },
+            
+            formatPhone(value) {
+                const cleaned = value.replace(/\D/g, '');
+                const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+                if (match) {
+                    return `(${match[1]}) ${match[2]}-${match[3]}`;
+                }
+                return value;
+            },
+            
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                const icon = document.getElementById('notificationIcon');
+                const text = document.getElementById('notificationText');
+
+                text.textContent = message;
+                
+                if (type === 'success') {
+                    icon.textContent = '✅';
+                    notification.classList.remove('error');
+                } else {
+                    icon.textContent = '❌';
+                    notification.classList.add('error');
+                }
+
+                notification.classList.add('show');
+                setTimeout(() => notification.classList.remove('show'), 4000);
+            },
+            
+            // ===========================================
+            // SCREEN MANAGEMENT
+            // ===========================================
+            
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                }
+            },
+            
+            showPage(pageId) {
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+            },
+            
+            // ===========================================
+            // TAB MANAGEMENT
+            // ===========================================
+            
+            switchLoginTab(target) {
+                console.log('🔄 Switching login tab to:', target);
+                
+                if (target === 'cliente') {
+                    // Switch to cliente section
+                    document.getElementById('clienteTabBtn').classList.add('active');
+                    document.getElementById('adminTabBtn').classList.remove('active');
+                    document.getElementById('clienteSection').classList.add('active');
+                    document.getElementById('adminSection').classList.remove('active');
+                    
+                    // Default to login form
+                    document.getElementById('loginTabBtn').classList.add('active');
+                    document.getElementById('cadastroTabBtn').classList.remove('active');
+                    document.getElementById('loginForm').classList.add('active');
+                    document.getElementById('cadastroForm').classList.remove('active');
+                    
+                } else if (target === 'admin') {
+                    // Switch to admin section
+                    document.getElementById('clienteTabBtn').classList.remove('active');
+                    document.getElementById('adminTabBtn').classList.add('active');
+                    document.getElementById('clienteSection').classList.remove('active');
+                    document.getElementById('adminSection').classList.add('active');
+                    
+                } else if (target === 'login') {
+                    // Switch to login form within cliente section
+                    document.getElementById('loginTabBtn').classList.add('active');
+                    document.getElementById('cadastroTabBtn').classList.remove('active');
+                    document.getElementById('loginForm').classList.add('active');
+                    document.getElementById('cadastroForm').classList.remove('active');
+                    
+                } else if (target === 'cadastro') {
+                    // Switch to cadastro form within cliente section
+                    document.getElementById('loginTabBtn').classList.remove('active');
+                    document.getElementById('cadastroTabBtn').classList.add('active');
+                    document.getElementById('loginForm').classList.remove('active');
+                    document.getElementById('cadastroForm').classList.add('active');
+                }
+                
+                console.log('✅ Tab switched successfully');
+            },
+            
+            switchAdminTab(target) {
+                // Reset all admin tabs
+                document.querySelectorAll('#adminPanel .tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('#adminPanel .form-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Activate target
+                document.getElementById(target + 'TabBtn').classList.add('active');
+                document.getElementById(target + 'Tab').classList.add('active');
+                
+                // Load data for specific tabs
+                if (target === 'transactions') this.loadTransactions();
+                else if (target === 'users') this.loadUsers();
+                else if (target === 'loginLogs') this.loadLoginLogs();
+            },
+            
+            // ===========================================
+            // AUTHENTICATION
+            // ===========================================
+            
+            async userLogin() {
+                const email = document.getElementById('loginEmail').value.trim();
+                const senha = document.getElementById('loginPassword').value;
+
+                if (!email || !senha) {
+                    this.showNotification('Preencha todos os campos', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('loginBtn');
+                this.setButtonLoading(btn, true);
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                try {
+                    const user = this.db.validateUser(email, senha);
+                    
+                    if (user) {
+                        this.currentSession = this.db.createSession(user.id, 'user');
+                        this.currentUser = user;
+                        this.db.logLogin(user.id, true, 'user');
+                        
+                        this.showNotification(`Bem-vindo de volta, ${user.nome}!`, 'success');
+                        
+                        setTimeout(() => {
+                            this.showScreen('mainApp');
+                            this.updateUserInterface();
+                        }, 1000);
+                    } else {
+                        const tempUser = this.db.findUserByEmail(email);
+                        if (tempUser) {
+                            this.db.logLogin(tempUser.id, false, 'user');
+                        }
+                        this.showNotification('Email ou senha incorretos', 'error');
+                    }
+                } catch (error) {
+                    this.showNotification('Erro interno do sistema', 'error');
+                    console.error('❌ Erro no login:', error);
+                }
+
+                this.setButtonLoading(btn, false);
+            },
+            
+            async userRegister() {
+                console.log('👤 Iniciando processo de cadastro...');
+                
+                const nome = document.getElementById('cadastroNome').value.trim();
+                const email = document.getElementById('cadastroEmail').value.trim();
+                const telefone = document.getElementById('cadastroTelefone').value.trim();
+                const senha = document.getElementById('cadastroSenha').value;
+
+                console.log('📝 Dados do cadastro:', { nome, email, telefone: telefone.substring(0, 5) + '...', senha: senha ? 'fornecida' : 'vazia' });
+
+                // Validações
+                if (!nome || !email || !telefone || !senha) {
+                    this.showNotification('Preencha todos os campos', 'error');
+                    return;
+                }
+
+                if (nome.length < 2) {
+                    this.showNotification('Nome deve ter pelo menos 2 caracteres', 'error');
+                    return;
+                }
+
+                if (!this.validateEmail(email)) {
+                    this.showNotification('Email inválido', 'error');
+                    return;
+                }
+
+                if (senha.length < 6) {
+                    this.showNotification('Senha deve ter pelo menos 6 caracteres', 'error');
+                    return;
+                }
+
+                if (telefone.replace(/\D/g, '').length < 10) {
+                    this.showNotification('Telefone inválido', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('cadastroBtn');
+                this.setButtonLoading(btn, true);
+
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                try {
+                    // Check if email already exists
+                    if (this.db.findUserByEmail(email)) {
+                        this.showNotification('Este email já está cadastrado', 'error');
+                        this.setButtonLoading(btn, false);
+                        return;
+                    }
+
+                    // Create user
+                    const newUser = this.db.createUser({ 
+                        nome, 
+                        email, 
+                        telefone: this.formatPhone(telefone), 
+                        senha 
+                    });
+                    
+                    console.log('✅ Usuário criado com sucesso:', newUser.nome);
+                    this.showNotification('🎉 Conta criada com sucesso!', 'success');
+                    
+                    // Auto-login after successful registration
+                    setTimeout(() => {
+                        this.currentSession = this.db.createSession(newUser.id, 'user');
+                        this.currentUser = newUser;
+                        this.db.logLogin(newUser.id, true, 'user');
+                        
+                        console.log('🔐 Auto-login realizado para:', newUser.nome);
+                        this.showNotification(`Bem-vindo, ${newUser.nome}!`, 'success');
+                        
+                        setTimeout(() => {
+                            this.showScreen('mainApp');
+                            this.updateUserInterface();
+                        }, 1000);
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('❌ Erro no cadastro:', error);
+                    this.showNotification('Erro ao criar conta', 'error');
+                }
+
+                this.setButtonLoading(btn, false);
+            },
+
+            validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            },
+            
+            async adminLogin() {
+                const senha = document.getElementById('adminPassword').value;
+
+                if (!senha) {
+                    this.showNotification('Digite a senha de administrador', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('adminLoginBtn');
+                this.setButtonLoading(btn, true);
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                try {
+                    if (senha === this.ADMIN_PASSWORD) {
+                        this.currentSession = this.db.createSession('admin', 'admin');
+                        this.db.logLogin('admin', true, 'admin');
+                        
+                        this.showNotification('Acesso autorizado - Bem-vindo, Admin!', 'success');
+                        
+                        setTimeout(() => {
+                            this.showScreen('adminPanel');
+                            this.updateAdminInterface();
+                        }, 1000);
+                    } else {
+                        this.db.logLogin('admin', false, 'admin');
+                        this.showNotification('Senha de administrador incorreta', 'error');
+                    }
+                } catch (error) {
+                    this.showNotification('Erro interno do sistema', 'error');
+                    console.error('❌ Erro no login admin:', error);
+                }
+
+                this.setButtonLoading(btn, false);
+            },
+            
+            logout() {
+                if (this.currentSession) {
+                    const session = this.db.sessions.find(s => s.id === this.currentSession.id);
+                    if (session) {
+                        session.isActive = false;
+                    }
+                    this.db.saveAll();
+                }
+
+                this.currentUser = null;
+                this.currentSession = null;
+                
+                this.showNotification('Logout realizado com sucesso', 'success');
+                
+                setTimeout(() => {
+                    this.showScreen('loginScreen');
+                    this.clearForms();
+                    this.resetTabs();
+                }, 1000);
+            },
+            
+            // ===========================================
+            // INTERFACE UPDATES
+            // ===========================================
+            
+            updateUserInterface() {
+                if (this.currentUser) {
+                    document.getElementById('userName').textContent = this.currentUser.nome;
+                    this.loadUserData();
+                }
+            },
+            
+            updateAdminInterface() {
+                const stats = this.db.getStats();
+                
+                document.getElementById('totalUsers').textContent = stats.totalUsers;
+                document.getElementById('totalTransactions').textContent = stats.totalTransactions;
+                document.getElementById('pendingTransactions').textContent = stats.pendingTransactions;
+                document.getElementById('totalRevenue').textContent = this.formatCurrency(stats.totalRevenue);
+                
+                this.loadTransactions();
+            },
+            
+            loadUserData() {
+                const userInfo = document.getElementById('userInfo');
+                if (this.currentUser && userInfo) {
+                    userInfo.innerHTML = `
+                        <div class="form-group">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-input" value="${this.currentUser.nome}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" value="${this.currentUser.email}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-input" value="${this.currentUser.telefone}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Membro desde</label>
+                            <input type="text" class="form-input" value="${new Date(this.currentUser.createdAt).toLocaleDateString('pt-BR')}" readonly>
+                        </div>
+                    `;
+                }
+            },
+            
+            // ===========================================
+            // PLAN SELECTION AND PAYMENT
+            // ===========================================
+            
+            selectPlan(service, price, bonus, element) {
+                this.currentService = service;
+                this.currentPlan = { price, bonus };
+                
+                // Remove previous selections
+                document.querySelectorAll(`#${service}Page .plan-card`).forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // Add selection to clicked card
+                element.classList.add('selected');
+                
+                // Enable proceed button
+                document.getElementById(service + 'ProceedBtn').disabled = false;
+            },
+            
+            proceedToPix(service) {
+                let serviceData = {};
+
+                if (service === 'vivo') {
+                    const number = document.getElementById('vivoNumber').value;
+                    if (!number) {
+                        this.showNotification('Preencha o número do celular', 'error');
+                        return;
+                    }
+                    serviceData = { number: this.formatPhone(number) };
+                } else if (service === 'tim') {
+                    const holder = document.getElementById('timHolder').value;
+                    const password = document.getElementById('timPassword').value;
+                    const email = document.getElementById('timEmail').value;
+                    const number = document.getElementById('timNumber').value;
+                    
+                    if (!holder || !password || !email || !number) {
+                        this.showNotification('Preencha todos os campos', 'error');
+                        return;
+                    }
+                    serviceData = { holder, password, email, number: this.formatPhone(number) };
+                }
+
+                if (!this.currentPlan) {
+                    this.showNotification('Selecione um plano', 'error');
+                    return;
+                }
+
+                // Create transaction log
+                const transactionData = {
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.nome,
+                    userEmail: this.currentUser.email,
+                    userPhone: this.currentUser.telefone,
+                    type: `recarga_${service}`,
+                    service: service,
+                    amount: this.currentPlan.price,
+                    bonus: this.currentPlan.bonus,
+                    targetNumber: serviceData.number,
+                    planDetails: service === 'tim' ? `Plano ${this.formatCurrency(this.currentPlan.bonus)}` : null
+                };
+
+                const transaction = this.db.logTransaction(transactionData);
+                this.showPixPage(transaction);
+            },
+            
+            showPixPage(transaction) {
+                const summaryDiv = document.getElementById('paymentSummary');
+                let serviceInfo = '';
+                
+                if (transaction.service === 'vivo') {
+                    serviceInfo = `
+                        <div style="background: rgba(37, 99, 235, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                            <h3>📱 Recarga Vivo</h3>
+                            <p><strong>Número:</strong> ${transaction.targetNumber}</p>
+                            <p><strong>Você paga:</strong> ${this.formatCurrency(transaction.amount)}</p>
+                            <p><strong>Você recebe:</strong> ${this.formatCurrency(transaction.bonus)}</p>
+                        </div>
+                    `;
+                } else if (transaction.service === 'tim') {
+                    serviceInfo = `
+                        <div style="background: rgba(37, 99, 235, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                            <h3>📞 Recarga TIM</h3>
+                            <p><strong>Número:</strong> ${transaction.targetNumber}</p>
+                            <p><strong>Você paga:</strong> ${this.formatCurrency(transaction.amount)}</p>
+                            <p><strong>Plano equivalente:</strong> ${this.formatCurrency(transaction.bonus)}</p>
+                        </div>
+                    `;
+                } else if (transaction.service === 'fatura') {
+                    serviceInfo = `
+                        <div style="background: rgba(37, 99, 235, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                            <h3>🧾 Pagamento de Fatura</h3>
+                            <p><strong>Operadora:</strong> ${transaction.operadora?.toUpperCase()}</p>
+                            <p><strong>Número:</strong> ${transaction.targetNumber}</p>
+                            <p><strong>Valor Original:</strong> ${this.formatCurrency(transaction.originalValue)}</p>
+                            <p><strong>Desconto (35%):</strong> ${this.formatCurrency(transaction.discount)}</p>
+                            <p><strong>Valor Final:</strong> ${this.formatCurrency(transaction.amount)}</p>
+                        </div>
+                    `;
+                }
+                
+                summaryDiv.innerHTML = serviceInfo;
+                this.showPage('pixPage');
+            },
+            
+            copyPixKey() {
+                const pixKey = document.getElementById('pixKey').textContent;
+                navigator.clipboard.writeText(pixKey).then(() => {
+                    this.showNotification('Chave PIX copiada!', 'success');
+                    this.startTimer();
+                }).catch(() => {
+                    this.showNotification('Erro ao copiar chave PIX', 'error');
+                });
+            },
+            
+            startTimer() {
+                let timeLeft = 90; // 90 seconds
+                const timerDiv = document.getElementById('countdown');
+                const timerSection = document.getElementById('timerSection');
+                const receiptSection = document.getElementById('receiptSection');
+                
+                timerSection.classList.remove('hidden');
+                
+                this.pixTimer = setInterval(() => {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerDiv.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(this.pixTimer);
+                        timerSection.classList.add('hidden');
+                        receiptSection.classList.remove('hidden');
+                    }
+                    timeLeft--;
+                }, 1000);
+            },
+            
+            previewReceipt() {
+                const file = document.getElementById('receiptFile').files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        document.getElementById('receiptImg').src = e.target.result;
+                        document.getElementById('receiptPreview').classList.remove('hidden');
+                        document.getElementById('sendReceiptBtn').disabled = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            },
+            
+            sendReceipt() {
+                const file = document.getElementById('receiptFile').files[0];
+                if (!file) {
+                    this.showNotification('Selecione um comprovante', 'error');
+                    return;
+                }
+
+                // Find the most recent pending transaction for this user
+                const transaction = this.db.transactionLogs
+                    .filter(t => t.userId === this.currentUser.id && t.status === 'pending')
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+
+                if (transaction) {
+                    const receiptData = document.getElementById('receiptImg').src;
+                    this.db.updateTransactionStatus(transaction.id, 'completed', receiptData);
+                    
+                    this.showNotification('Comprovante enviado com sucesso! Recarga processada.', 'success');
+                    
+                    setTimeout(() => {
+                        this.showPage('homePage');
+                        // Reset PIX page state
+                        document.getElementById('timerSection').classList.add('hidden');
+                        document.getElementById('receiptSection').classList.add('hidden');
+                        document.getElementById('receiptPreview').classList.add('hidden');
+                        document.getElementById('sendReceiptBtn').disabled = true;
+                        if (this.pixTimer) clearInterval(this.pixTimer);
+                    }, 2000);
+                }
+            },
+            
+            goBackFromPix() {
+                if (this.pixTimer) clearInterval(this.pixTimer);
+                document.getElementById('timerSection').classList.add('hidden');
+                document.getElementById('receiptSection').classList.add('hidden');
+                
+                if (this.currentService === 'vivo') {
+                    this.showPage('vivoPage');
+                } else if (this.currentService === 'tim') {
+                    this.showPage('timPage');
+                } else if (this.currentService === 'fatura') {
+                    this.showPage('faturaPage');
+                } else {
+                    this.showPage('homePage');
+                }
+            },
+            
+            // ===========================================
+            // FATURA PAYMENT
+            // ===========================================
+            
+            calculateDiscount() {
+                const operadora = document.getElementById('faturaOperadora').value;
+                const number = document.getElementById('faturaNumber').value;
+                const password = document.getElementById('faturaPassword').value;
+                const value = parseFloat(document.getElementById('faturaValue').value);
+
+                if (!operadora || !number || !password || !value) {
+                    this.showNotification('Preencha todos os campos', 'error');
+                    return;
+                }
+
+                const discount = value * 0.35;
+                const finalValue = value - discount;
+
+                document.getElementById('originalValue').textContent = this.formatCurrency(value);
+                document.getElementById('discountValue').textContent = this.formatCurrency(discount);
+                document.getElementById('finalValue').textContent = this.formatCurrency(finalValue);
+                document.getElementById('faturaDiscount').classList.remove('hidden');
+
+                // Create transaction for fatura
+                const transactionData = {
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.nome,
+                    userEmail: this.currentUser.email,
+                    userPhone: this.currentUser.telefone,
+                    type: 'pagamento_fatura',
+                    service: 'fatura',
+                    amount: finalValue,
+                    originalValue: value,
+                    discount: discount,
+                    operadora: operadora,
+                    targetNumber: this.formatPhone(number)
+                };
+
+                const transaction = this.db.logTransaction(transactionData);
+
+                setTimeout(() => {
+                    this.currentService = 'fatura';
+                    this.currentPlan = { price: finalValue, bonus: value };
+                    this.showPixPage(transaction);
+                }, 2000);
+            },
+            
+            // ===========================================
+            // ADMIN FUNCTIONS
+            // ===========================================
+            
+            loadTransactions() {
+                const tbody = document.getElementById('transactionsTableBody');
+                if (!tbody) return;
+
+                tbody.innerHTML = '';
+                
+                const transactions = [...this.db.transactionLogs].sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+                
+                if (transactions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px; color: var(--text-secondary);">Nenhuma transação registrada ainda</td></tr>';
+                    return;
+                }
+                
+                transactions.forEach(transaction => {
+                    const row = tbody.insertRow();
+                    
+                    const statusClass = transaction.status === 'completed' ? 'status-completed' : 
+                                      transaction.status === 'failed' ? 'status-failed' : 'status-pending';
+                    
+                    const typeDisplay = this.getTransactionTypeDisplay(transaction);
+                    
+                    row.innerHTML = `
+                        <td><code>${transaction.id.substr(-8)}</code></td>
+                        <td><strong>${transaction.userName}</strong></td>
+                        <td>${transaction.userEmail}</td>
+                        <td>${typeDisplay}</td>
+                        <td><strong>${this.formatCurrency(transaction.amount)}</strong></td>
+                        <td><span class="${statusClass}">${this.getStatusDisplay(transaction.status)}</span></td>
+                        <td>${new Date(transaction.timestamp).toLocaleString('pt-BR')}</td>
+                        <td>
+                            <button class="btn-small" onclick="TH.viewTransactionDetails('${transaction.id}')">
+                                Detalhes
+                            </button>
+                        </td>
+                    `;
+                });
+            },
+            
+            loadUsers() {
+                const tbody = document.getElementById('usersTableBody');
+                if (!tbody) return;
+
+                tbody.innerHTML = '';
+                
+                if (this.db.users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: var(--text-secondary);">Nenhum usuário cadastrado ainda</td></tr>';
+                    return;
+                }
+                
+                this.db.users.forEach(user => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td><strong>${user.nome}</strong></td>
+                        <td>${user.email}</td>
+                        <td>${user.telefone}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString('pt-BR')}</td>
+                        <td>${user.lastLogin ? new Date(user.lastLogin).toLocaleString('pt-BR') : 'Nunca'}</td>
+                        <td><span class="status-success">Ativo</span></td>
+                    `;
+                });
+            },
+            
+            loadLoginLogs() {
+                const tbody = document.getElementById('loginLogsTableBody');
+                if (!tbody) return;
+
+                tbody.innerHTML = '';
+                
+                const logs = [...this.db.loginLogs].sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                ).slice(0, 50);
+                
+                if (logs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 30px; color: var(--text-secondary);">Nenhum log registrado ainda</td></tr>';
+                    return;
+                }
+                
+                logs.forEach(log => {
+                    const row = tbody.insertRow();
+                    const user = this.db.users.find(u => u.id === log.userId);
+                    const userName = user ? user.nome : (log.userId === 'admin' ? 'Administrador' : 'Usuário Desconhecido');
+                    
+                    const statusClass = log.success ? 'status-success' : 'status-error';
+                    const statusText = log.success ? '✅ Sucesso' : '❌ Falhou';
+                    
+                    row.innerHTML = `
+                        <td><strong>${userName}</strong></td>
+                        <td>${log.userType === 'admin' ? '🔐 Admin' : '👤 Cliente'}</td>
+                        <td><span class="${statusClass}">${statusText}</span></td>
+                        <td>${new Date(log.timestamp).toLocaleString('pt-BR')}</td>
+                    `;
+                });
+            },
+            
+            getTransactionTypeDisplay(transaction) {
+                const types = {
+                    'recarga_vivo': '📱 Recarga Vivo',
+                    'recarga_tim': '📞 Recarga TIM',
+                    'pagamento_fatura': '🧾 Pagamento Fatura'
+                };
+                return types[transaction.type] || transaction.type;
+            },
+            
+            getStatusDisplay(status) {
+                const statuses = {
+                    'pending': '⏳ Pendente',
+                    'completed': '✅ Concluído',
+                    'failed': '❌ Falhou'
+                };
+                return statuses[status] || status;
+            },
+            
+            viewTransactionDetails(transactionId) {
+                const transaction = this.db.transactionLogs.find(t => t.id === transactionId);
+                if (!transaction) return;
+                
+                let detailsHtml = `
+                    <div style="max-width: 500px;">
+                        <h4 style="margin-bottom: 20px; color: var(--accent-green);">Detalhes da Transação</h4>
+                        
+                        <div style="background: rgba(37, 99, 235, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Cliente:</strong><br>
+                            Nome: ${transaction.userName}<br>
+                            Email: ${transaction.userEmail}<br>
+                            Telefone: ${transaction.userPhone}
+                        </div>
+                        
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Transação:</strong><br>
+                            ID: ${transaction.id}<br>
+                            Tipo: ${this.getTransactionTypeDisplay(transaction)}<br>
+                            Valor: ${this.formatCurrency(transaction.amount)}<br>
+                            Status: ${this.getStatusDisplay(transaction.status)}<br>
+                            Data: ${new Date(transaction.timestamp).toLocaleString('pt-BR')}
+                        </div>
+                `;
+                
+                if (transaction.service === 'vivo') {
+                    detailsHtml += `
+                        <div style="background: rgba(139, 92, 246, 0.05); padding: 15px; border-radius: 8px;">
+                            <strong>Recarga Vivo:</strong><br>
+                            Número: ${transaction.targetNumber}<br>
+                            Valor Pago: ${this.formatCurrency(transaction.amount)}<br>
+                            Bônus Recebido: ${this.formatCurrency(transaction.bonus)}
+                        </div>
+                    `;
+                } else if (transaction.service === 'tim') {
+                    detailsHtml += `
+                        <div style="background: rgba(139, 92, 246, 0.05); padding: 15px; border-radius: 8px;">
+                            <strong>Recarga TIM:</strong><br>
+                            Número: ${transaction.targetNumber}<br>
+                            Valor Pago: ${this.formatCurrency(transaction.amount)}<br>
+                            Plano Equivalente: ${this.formatCurrency(transaction.bonus)}
+                        </div>
+                    `;
+                } else if (transaction.service === 'fatura') {
+                    detailsHtml += `
+                        <div style="background: rgba(139, 92, 246, 0.05); padding: 15px; border-radius: 8px;">
+                            <strong>Pagamento de Fatura:</strong><br>
+                            Operadora: ${transaction.operadora?.toUpperCase()}<br>
+                            Número: ${transaction.targetNumber}<br>
+                            Valor Original: ${this.formatCurrency(transaction.originalValue)}<br>
+                            Desconto (35%): ${this.formatCurrency(transaction.discount)}<br>
+                            Valor Final: ${this.formatCurrency(transaction.amount)}
+                        </div>
+                    `;
+                }
+                
+                detailsHtml += '</div>';
+                this.showModal('Detalhes da Transação', detailsHtml);
+            },
+            
+            showModal(title, content) {
+                const existingModal = document.getElementById('customModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+                
+                const modal = document.createElement('div');
+                modal.id = 'customModal';
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    z-index: 1000;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    backdrop-filter: blur(10px);
+                `;
+                
+                modal.innerHTML = `
+                    <div style="
+                        background: var(--glass-bg);
+                        backdrop-filter: blur(20px);
+                        border: 1px solid var(--glass-border);
+                        border-radius: 16px;
+                        padding: 30px;
+                        max-width: 600px;
+                        width: 90%;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                        position: relative;
+                    ">
+                        <button onclick="document.getElementById('customModal').remove()" style="
+                            position: absolute;
+                            top: 15px;
+                            right: 15px;
+                            background: none;
+                            border: none;
+                            color: var(--text-primary);
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            width: 30px;
+                            height: 30px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 50%;
+                            transition: background 0.3s ease;
+                        " onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'" onmouseout="this.style.background='none'">&times;</button>
+                        
+                        <h3 style="margin-bottom: 20px; color: var(--text-primary);">${title}</h3>
+                        ${content}
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                });
+            },
+            
+            saveSettings() {
+                const systemStatus = document.getElementById('systemStatusSelect').value;
+                
+                this.db.settings.systemStatus = systemStatus;
+                this.db.saveAll();
+                
+                this.showNotification('Configurações salvas com sucesso!', 'success');
+                
+                setTimeout(() => {
+                    this.updateAdminInterface();
+                }, 500);
+            },
+            
+            // ===========================================
+            // UTILITY FUNCTIONS
+            // ===========================================
+            
+            setButtonLoading(button, loading) {
+                if (loading) {
+                    button.disabled = true;
+                    const originalText = button.querySelector('span').textContent;
+                    button.innerHTML = `<div class="loading"></div> ${originalText.includes('Entrar') ? 'Entrando...' : 
+                                                                      originalText.includes('Criar') ? 'Criando...' : 
+                                                                      'Verificando...'}`;
+                } else {
+                    button.disabled = false;
+                    const buttonType = button.id;
+                    if (buttonType === 'loginBtn') {
+                        button.innerHTML = '<span>Entrar na Conta</span>';
+                    } else if (buttonType === 'cadastroBtn') {
+                        button.innerHTML = '<span>Criar Conta</span>';
+                    } else if (buttonType === 'adminLoginBtn') {
+                        button.innerHTML = '<span>Acessar Painel Admin</span>';
+                    }
+                }
+            },
+            
+            clearForms() {
+                document.querySelectorAll('.form-input, .form-select').forEach(input => {
+                    input.value = '';
+                });
+                document.querySelectorAll('.plan-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+            },
+            
+            resetTabs() {
+                this.switchLoginTab('cliente');
+            },
+            
+            setupPhoneFormatting() {
+                document.addEventListener('input', (e) => {
+                    if (e.target.type === 'tel') {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (value.length <= 11) {
+                            if (value.length <= 2) {
+                                e.target.value = value;
+                            } else if (value.length <= 7) {
+                                e.target.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+                            } else {
+                                e.target.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+                            }
+                        }
+                    }
+                });
+            },
+            
+            // ===========================================
+            // INITIALIZATION
+            // ===========================================
+            
+            init() {
+                console.log('🚀 Inicializando TH STORE...');
+                
+                // Initialize database first
+                this.db.init();
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                this.setupPhoneFormatting();
+                
+                console.log('✅ TH STORE inicializado com sucesso!');
+                console.log('🔐 Senha Admin: TH@Store2024#Premium!');
+            },
+            
+            setupEventListeners() {
+                console.log('🔗 Configurando event listeners...');
+                
+                // Login tab switching - Fixed event listeners
+                document.getElementById('clienteTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchLoginTab('cliente');
+                });
+                
+                document.getElementById('adminTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchLoginTab('admin');
+                });
+                
+                document.getElementById('loginTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchLoginTab('login');
+                });
+                
+                document.getElementById('cadastroTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchLoginTab('cadastro');
+                });
+
+                // Auth buttons
+                document.getElementById('loginBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.userLogin();
+                });
+                
+                document.getElementById('cadastroBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.userRegister();
+                });
+                
+                document.getElementById('adminLoginBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.adminLogin();
+                });
+                
+                // Logout buttons
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+                
+                document.getElementById('adminLogoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+
+                // Admin tabs
+                document.getElementById('transactionsTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchAdminTab('transactions');
+                });
+                
+                document.getElementById('usersTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchAdminTab('users');
+                });
+                
+                document.getElementById('loginLogsTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchAdminTab('loginLogs');
+                });
+                
+                document.getElementById('settingsTabBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchAdminTab('settings');
+                });
+
+                // Settings
+                document.getElementById('saveSettingsBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.saveSettings();
+                });
+
+                // Enter key support
+                document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.userLogin();
+                    }
+                });
+                
+                document.getElementById('cadastroSenha').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.userRegister();
+                    }
+                });
+                
+                document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.adminLogin();
+                    }
+                });
+
+                // Session activity tracking
+                document.addEventListener('click', () => {
+                    if (this.currentSession && this.currentSession.isActive) {
+                        const session = this.db.sessions.find(s => s.id === this.currentSession.id);
+                        if (session) {
+                            session.lastActivity = new Date().toISOString();
+                            this.db.saveAll();
+                        }
+                    }
+                });
+
+                console.log('✅ Event listeners configurados!');
+            }
+        };
+
+        // ===========================================
+        // GLOBAL INITIALIZATION
+        // ===========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the TH STORE system
+            TH.init();
+            
+            // Setup auto-cleanup sessions every 5 minutes
+            setInterval(() => {
+                TH.db.cleanupSessions();
+            }, 5 * 60 * 1000);
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH STORE - Sistema de Recarga Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0a0f1c;
+            --secondary-dark: #1a2332;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --glass-bg: rgba(26, 35, 50, 0.9);
+            --glass-border: rgba(37, 99, 235, 0.3);
+            --gradient-primary: linear-gradient(135deg, #0a0f1c 0%, #1a2332 50%, #2563eb 100%);
+            --gradient-secondary: linear-gradient(135deg, #10b981 0%, #8b5cf6 100%);
+            --shadow-glow: 0 20px 40px rgba(37, 99, 235, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.1) 0%, transparent 60%);
+        }
+
+        /* Layout Classes */
+        .screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 50px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow-glow);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 35px;
+            background: rgba(26, 35, 50, 0.6);
+            border-radius: 16px;
+            padding: 6px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px 20px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s ease;
+            color: var(--text-secondary);
+        }
+
+        .tab.active {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Forms */
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(26, 35, 50, 0.8);
+            border: 2px solid rgba(37, 99, 235, 0.2);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .btn-primary {
+            background: var(--gradient-secondary);
+            color: var(--primary-dark);
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-dark);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* App Header */
+        .app-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-glow);
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        /* Navigation Grid */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .nav-item {
+            background: var(--gradient-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--accent-blue);
+        }
+
+        .nav-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .nav-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .nav-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: var(--gradient-primary);
+            border: 1px solid var(--accent-green);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateX(-5px);
+        }
+
+        /* Plan Grid */
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .plan-card {
+            background: var(--gradient-primary);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .plan-card:hover, .plan-card.selected {
+            border-color: var(--accent-green);
+            transform: scale(1.02);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 5px;
+        }
+
+        .plan-bonus {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* PIX Section */
+        .pix-section {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .pix-key {
+            background: var(--secondary-dark);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            margin: 10px 0;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .timer {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin: 20px 0;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: block;
+            background: var(--gradient-primary);
+            border: 2px dashed rgba(16, 185, 129, 0.5);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* Admin Panel */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--gradient-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            margin-top: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background: var(--glass-bg);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: rgba(37, 99, 235, 0.1);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .data-table tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .status-pending { color: #fbbf24; font-weight: 600; }
+        .status-completed { color: #10b981; font-weight: 600; }
+        .status-failed { color: #ef4444; font-weight: 600; }
+        .status-success { color: #10b981; font-weight: 600; }
+        .status-error { color: #ef4444; font-weight: 600; }
+
+        .btn-small {
+            background: var(--gradient-secondary);
+            color: var(--primary-dark);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 20px 25px;
+            color: var(--text-primary);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+            min-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            border-color: #ef4444;
+            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Security Styles */
+        .security-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .security-warning.active {
+            display: flex;
+        }
+
+        .security-message {
+            background: var(--glass-bg);
+            border: 2px solid #ef4444;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .security-icon {
+            font-size: 4rem;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+
+        .security-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+
+        .security-text {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Admin Protection Styles */
+        .admin-locked {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Enhanced form security */
+        .form-input.secure {
+            -webkit-text-security: disc;
+            text-security: disc;
+        }
+
+        /* Disable context menu for admin */
+        .no-context {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-context-menu: none;
+        }
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 35px 25px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+
+            .notification {
+                right: 15px;
+                left: 15px;
+                min-width: auto;
+                transform: translateY(-100px);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="header">
+                        <div class="logo">TH STORE</div>
+                        <div class="subtitle">Sistema de Recarga Premium</div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab active" id="clienteTabBtn">👤 Cliente</div>
+                        <div class="tab" id="adminTabBtn">🔐 Admin</div>
+                    </div>
+
+                    <!-- Cliente Section -->
+                    <div id="clienteSection" class="form-section active">
+                        <div class="tabs" style="margin-bottom: 25px;">
+                            <div class="tab active" id="loginTabBtn">Entrar</div>
+                            <div class="tab" id="cadastroTabBtn">Cadastrar</div>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div id="loginForm" class="form-section active">
+                            <div class="form-group">
+                                <label class="form-label">📧 Email</label>
+                                <input type="email" class="form-input" id="loginEmail" placeholder="seu@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🔒 Senha</label>
+                                <input type="password" class="form-input" id="loginPassword" placeholder="Digite sua senha" required>
+                            </div>
+                            <button class="btn-primary" id="loginBtn">
+                                <span>Entrar na Conta</span>
+                            </button>
+                        </div>
+
+                        <!-- Cadastro Form -->
+                        <div id="cadastroForm" class="form-section">
+                            <div class="form-group">
+                                <label class="form-label">👤 Nome Completo</label>
+                                <input type="text" class="form-input" id="cadastroNome" placeholder="Seu nome completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📧 Email</label>
+                                <input type="email" class="form-input" id="cadastroEmail" placeholder="seu@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📱 Telefone</label>
+                                <input type="tel" class="form-input" id="cadastroTelefone" placeholder="(11) 99999-9999" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">🔒 Senha</label>
+                                <input type="password" class="form-input" id="cadastroSenha" placeholder="Crie uma senha forte" required>
+                            </div>
+                            <button class="btn-primary" id="cadastroBtn">
+                                <span>Criar Conta</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Admin Section -->
+                    <div id="adminSection" class="form-section">
+                        <div class="form-group">
+                            <label class="form-label">🔐 Senha de Administrador</label>
+                            <input type="password" class="form-input secure" id="adminPassword" placeholder="Digite a senha de admin" required autocomplete="off" spellcheck="false">
+                        </div>
+                        <button class="btn-primary" id="adminLoginBtn">
+                            <span>Acessar Painel Admin</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="screen">
+            <div class="app-header">
+                <div class="container">
+                    <div class="app-logo">TH STORE</div>
+                    <div class="user-info">
+                        <span id="userName">Usuário</span>
+                        <button class="logout-btn" id="logoutBtn">Sair</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container" style="padding-top: 40px;">
+                <!-- Home Page -->
+                <div id="homePage" class="page active">
+                    <div class="glass-card">
+                        <h1 class="page-title">Bem-vindo ao TH STORE</h1>
+                        <p class="page-subtitle">Recargas e Pagamentos com os Melhores Descontos</p>
+                        
+                        <div class="nav-grid">
+                            <div class="nav-item" onclick="TH.showPage('vivoPage')">
+                                <div class="nav-icon">📱</div>
+                                <div class="nav-title">Recarga Vivo</div>
+                                <div class="nav-description">Recargas com super bônus incríveis</div>
+                            </div>
+                            <div class="nav-item" onclick="TH.showPage('timPage')">
+                                <div class="nav-icon">📞</div>
+                                <div class="nav-title">Recarga TIM</div>
+                                <div class="nav-description">Planos com desconto especial</div>
+                            </div>
+                            <div class="nav-item" onclick="TH.showPage('faturaPage')">
+                                <div class="nav-icon">🧾</div>
+                                <div class="nav-title">Pagamento de Fatura</div>
+                                <div class="nav-description">TIM e Claro com 35% OFF</div>
+                            </div>
+                            <div class="nav-item" onclick="TH.showPage('dadosPage')">
+                                <div class="nav-icon">👤</div>
+                                <div class="nav-title">Meus Dados</div>
+                                <div class="nav-description">Informações da conta</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vivo Page -->
+                <div id="vivoPage" class="page">
+                    <div class="glass-card">
+                        <button class="back-btn" onclick="TH.showPage('homePage')">← Voltar</button>
+                        <h2 class="page-title">Recarga Vivo</h2>
+                        <p class="page-subtitle">Escolha seu plano e ganhe bônus incríveis</p>
+
+                        <div class="form-group">
+                            <label class="form-label">Número do Celular</label>
+                            <input type="tel" class="form-input" id="vivoNumber" placeholder="(11) 99999-9999" maxlength="15">
+                        </div>
+
+                        <div class="plan-grid">
+                            <div class="plan-card" onclick="TH.selectPlan('vivo', 5, 20, this)">
+                                <div class="plan-price">R$ 5,00</div>
+                                <div class="plan-bonus">Ganhe R$ 20,00</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('vivo', 7.50, 30, this)">
+                                <div class="plan-price">R$ 7,50</div>
+                                <div class="plan-bonus">Ganhe R$ 30,00</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('vivo', 10, 40, this)">
+                                <div class="plan-price">R$ 10,00</div>
+                                <div class="plan-bonus">Ganhe R$ 40,00</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('vivo', 15, 50, this)">
+                                <div class="plan-price">R$ 15,00</div>
+                                <div class="plan-bonus">Ganhe R$ 50,00</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('vivo', 18, 60, this)">
+                                <div class="plan-price">R$ 18,00</div>
+                                <div class="plan-bonus">Ganhe R$ 60,00</div>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary" id="vivoProceedBtn" onclick="TH.proceedToPix('vivo')" disabled>
+                            Continuar com o Pagamento
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TIM Page -->
+                <div id="timPage" class="page">
+                    <div class="glass-card">
+                        <button class="back-btn" onclick="TH.showPage('homePage')">← Voltar</button>
+                        <h2 class="page-title">Recarga TIM</h2>
+                        <p class="page-subtitle">Planos com descontos exclusivos</p>
+
+                        <div class="form-group">
+                            <label class="form-label">Nome do Titular</label>
+                            <input type="text" class="form-input" id="timHolder" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Senha da Conta TIM</label>
+                            <input type="password" class="form-input" id="timPassword" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email da Conta TIM</label>
+                            <input type="email" class="form-input" id="timEmail" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Número TIM</label>
+                            <input type="tel" class="form-input" id="timNumber" placeholder="(11) 99999-9999" maxlength="15">
+                        </div>
+
+                        <div class="plan-grid">
+                            <div class="plan-card" onclick="TH.selectPlan('tim', 29, 79.99, this)">
+                                <div class="plan-price">R$ 29,00</div>
+                                <div class="plan-bonus">Plano R$ 79,99</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('tim', 19, 47.99, this)">
+                                <div class="plan-price">R$ 19,00</div>
+                                <div class="plan-bonus">Plano R$ 47,99</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('tim', 38, 104.99, this)">
+                                <div class="plan-price">R$ 38,00</div>
+                                <div class="plan-bonus">Plano R$ 104,99</div>
+                            </div>
+                            <div class="plan-card" onclick="TH.selectPlan('tim', 23, 64.99, this)">
+                                <div class="plan-price">R$ 23,00</div>
+                                <div class="plan-bonus">Plano R$ 64,99</div>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary" id="timProceedBtn" onclick="TH.proceedToPix('tim')" disabled>
+                            Continuar com o Pagamento
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fatura Page -->
+                <div id="faturaPage" class="
