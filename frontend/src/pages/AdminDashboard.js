@@ -529,11 +529,19 @@ const AdminDashboard = () => {
                         <p className="text-sm">{selectedTransaction.receipt_filename}</p>
                         <Button 
                           size="sm"
+                          onClick={() => viewReceipt(selectedTransaction.receipt_filename)}
+                          className="btn-premium mr-2"
+                        >
+                          <Eye className="w-4 h-4 mr-2" />
+                          Ver Comprovante
+                        </Button>
+                        <Button 
+                          size="sm"
                           onClick={() => downloadReceipt(selectedTransaction.receipt_filename)}
                           className="btn-premium"
                         >
                           <Download className="w-4 h-4 mr-2" />
-                          Ver Comprovante
+                          Baixar
                         </Button>
                       </div>
                     </div>
