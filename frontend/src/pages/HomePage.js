@@ -224,7 +224,7 @@ const HomePage = () => {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center">
                 <Phone className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold gradient-text">RecarGAS</span>
+              <span className="text-xl font-bold gradient-text">RECARGAS TH STORES</span>
             </div>
             
             <div className="flex space-x-6">
