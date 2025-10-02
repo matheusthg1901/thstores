@@ -63,6 +63,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     phone: str
+    account_number: str
 
 class UserLogin(BaseModel):
     email: EmailStr
