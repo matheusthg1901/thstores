@@ -63,10 +63,28 @@ const UserDashboard = () => {
     return new Date(dateString).toLocaleString('pt-BR');
   };
 
+  const [receiptModalOpen, setReceiptModalOpen] = useState(false);
+  const [receiptImageUrl, setReceiptImageUrl] = useState('');
+
+  const viewReceipt = (filename) => {
+    if (filename) {
+      const url = `${process.env.REACT_APP_BACKEND_URL}/uploads/${filename}`;
+      setReceiptImageUrl(url);
+      setReceiptModalOpen(true);
+    } else {
+      toast.error('Comprovante não disponível');
+    }
+  };
+
   const downloadReceipt = (filename) => {
     if (filename) {
       const url = `${process.env.REACT_APP_BACKEND_URL}/uploads/${filename}`;
-      window.open(url, '_blank');
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } else {
       toast.error('Comprovante não disponível');
     }
