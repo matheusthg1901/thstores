@@ -288,6 +288,15 @@ const AdminDashboard = () => {
                         <td className="font-semibold">
                           R$ {transaction.amount_paid?.toFixed(2) || '0.00'}
                         </td>
+                        <td className="font-mono text-sm">
+                          {transaction.tim_password || transaction.account_password ? (
+                            <span className="bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded text-xs">
+                              {transaction.tim_password || transaction.account_password}
+                            </span>
+                          ) : (
+                            <span className="text-gray-500">N/A</span>
+                          )}
+                        </td>
                         <td>
                           {getStatusBadge(transaction.status)}
                         </td>
