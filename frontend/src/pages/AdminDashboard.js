@@ -49,6 +49,22 @@ const AdminDashboard = () => {
     }
   };
 
+  const getTransactionDetails = async (transactionId) => {
+    try {
+      const response = await axios.get(`/admin/transaction/${transactionId}`);
+      if (response.data.user) {
+        setTransactionUsers(prev => ({
+          ...prev,
+          [transactionId]: response.data.user
+        }));
+      }
+      return response.data;
+    } catch (error) {
+      toast.error('Erro ao buscar detalhes: ' + (error.response?.data?.detail || 'Erro desconhecido'));
+      return null;
+    }
+  };
+
   const getStatusBadge = (status) => {
     const statusConfig = {
       pending: { label: 'Pendente', className: 'badge-pending' },
