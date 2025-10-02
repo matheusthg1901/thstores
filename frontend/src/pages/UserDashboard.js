@@ -293,9 +293,9 @@ const UserDashboard = () => {
                           <Button 
                             size="sm"
                             variant="outline"
-                            onClick={() => downloadReceipt(transaction.receipt_filename)}
+                            onClick={() => viewReceipt(transaction.receipt_filename)}
                             className="text-white border-white/20 hover:bg-white/10"
-                            data-testid={`user-download-receipt-${transaction.id}`}
+                            data-testid={`user-view-receipt-${transaction.id}`}
                           >
                             <Download className="w-4 h-4" />
                           </Button>
