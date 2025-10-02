@@ -340,6 +340,56 @@ const UserDashboard = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Receipt Viewing Modal */}
+        {receiptModalOpen && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="glass-strong max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-6">
+                  <h2 className="text-2xl font-bold text-white">Meu Comprovante</h2>
+                  <Button 
+                    onClick={() => setReceiptModalOpen(false)}
+                    variant="outline"
+                    className="text-white border-white/20 hover:bg-white/10"
+                  >
+                    ✕
+                  </Button>
+                </div>
+                
+                <div className="flex justify-center bg-white/5 rounded-lg p-4">
+                  <img 
+                    src={receiptImageUrl} 
+                    alt="Meu Comprovante" 
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.parentElement.innerHTML = '<div class="text-center text-red-400 p-8"><p>Erro ao carregar comprovante</p></div>';
+                      toast.error('Erro ao carregar comprovante');
+                    }}
+                  />
+                </div>
+                
+                <div className="mt-6 flex justify-center space-x-4">
+                  <Button 
+                    onClick={() => downloadReceipt(receiptImageUrl.split('/').pop())}
+                    className="btn-premium"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Baixar
+                  </Button>
+                  <Button 
+                    onClick={() => setReceiptModalOpen(false)}
+                    variant="outline"
+                    className="text-white border-white/20 hover:bg-white/10"
+                  >
+                    Fechar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
