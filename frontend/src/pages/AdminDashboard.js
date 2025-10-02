@@ -234,7 +234,8 @@ const AdminDashboard = () => {
                     <tr>
                       <th className="text-left">Data</th>
                       <th className="text-left">Tipo</th>
-                      <th className="text-left">Telefone</th>
+                      <th className="text-left">Nº Registro</th>
+                      <th className="text-left">Telefone Recarga</th>
                       <th className="text-left">Valor</th>
                       <th className="text-left">Status</th>
                       <th className="text-left">Ações</th>
