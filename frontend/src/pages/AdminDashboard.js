@@ -22,6 +22,17 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Carregar detalhes dos usuários para cada transação
+    if (transactions.length > 0) {
+      transactions.forEach(transaction => {
+        if (!transactionUsers[transaction.id]) {
+          getTransactionDetails(transaction.id);
+        }
+      });
+    }
+  }, [transactions]);
+
   const fetchData = async () => {
     try {
       setLoading(true);
