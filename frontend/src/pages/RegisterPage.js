@@ -14,6 +14,7 @@ const RegisterPage = () => {
     name: '',
     email: '',
     phone: '',
+    account_number: '',
     password: '',
     confirmPassword: ''
   });
