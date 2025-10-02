@@ -331,15 +331,28 @@ const AdminDashboard = () => {
                             </Button>
                             
                             {transaction.receipt_filename && (
-                              <Button 
-                                size="sm"
-                                variant="outline"
-                                onClick={() => downloadReceipt(transaction.receipt_filename)}
-                                className="text-white border-white/20 hover:bg-white/10"
-                                data-testid={`download-receipt-${transaction.id}`}
-                              >
-                                <Download className="w-4 h-4" />
-                              </Button>
+                              <>
+                                <Button 
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => viewReceipt(transaction.receipt_filename)}
+                                  className="text-white border-white/20 hover:bg-white/10"
+                                  data-testid={`view-receipt-${transaction.id}`}
+                                  title="Ver Comprovante"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </Button>
+                                <Button 
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => downloadReceipt(transaction.receipt_filename)}
+                                  className="text-white border-white/20 hover:bg-white/10"
+                                  data-testid={`download-receipt-${transaction.id}`}
+                                  title="Baixar Comprovante"
+                                >
+                                  <Download className="w-4 h-4" />
+                                </Button>
+                              </>
                             )}
                             
                             {transaction.status === 'paid' && (
