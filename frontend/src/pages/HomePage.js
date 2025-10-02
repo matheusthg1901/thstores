@@ -242,7 +242,7 @@ const HomePage = () => {
           
           <div className="mt-8 pt-8 border-t border-gray-800 text-center">
             <p className="text-gray-400">
-              © 2024 RecarGAS. Todos os direitos reservados.
+              © 2024 RECARGAS TH STORES. Todos os direitos reservados.
             </p>
           </div>
         </div>
