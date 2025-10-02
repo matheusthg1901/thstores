@@ -173,6 +173,11 @@ async def init_admin():
         await db.admins.insert_one(admin_dict)
         print("Admin user created successfully")
 
+# Root route
+@api_router.get("/")
+async def root():
+    return {"message": "Sistema de Recarga Telefônica API v1.0", "status": "running"}
+
 # Auth Routes
 @api_router.post("/auth/register")
 async def register_user(user_data: UserCreate):
