@@ -467,6 +467,9 @@ async def get_user_transactions(current_user = Depends(get_current_user)):
 # Include the router in the main app
 app.include_router(api_router)
 
+# Mount static files after router
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
