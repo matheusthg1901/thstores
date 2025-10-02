@@ -106,8 +106,9 @@ const AdminDashboard = () => {
   const viewReceipt = (filename) => {
     if (filename) {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
-      const url = `${backendUrl}/uploads/${filename}`;
-      console.log('Opening receipt URL:', url); // Debug
+      // Try alternative API route first, fallback to static files
+      const url = `${backendUrl}/api/files/${filename}`;
+      console.log('Opening receipt URL:', url);
       setReceiptImageUrl(url);
       setReceiptModalOpen(true);
     } else {
