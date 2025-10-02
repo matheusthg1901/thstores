@@ -265,6 +265,7 @@ const AdminDashboard = () => {
                       <th className="text-left">Nº Registro</th>
                       <th className="text-left">Telefone Recarga</th>
                       <th className="text-left">Valor</th>
+                      <th className="text-left">Senha Conta</th>
                       <th className="text-left">Status</th>
                       <th className="text-left">Ações</th>
                     </tr>
