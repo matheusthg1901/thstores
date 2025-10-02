@@ -16,6 +16,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('transactions');
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [transactionUsers, setTransactionUsers] = useState({});
 
   useEffect(() => {
     fetchData();
