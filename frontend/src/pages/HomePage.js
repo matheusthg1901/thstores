@@ -194,7 +194,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h3 className="text-4xl font-bold text-white mb-4">
-              Por que escolher a RecarGAS?
+              Por que escolher a RECARGAS TH STORES?
             </h3>
           </div>
           
