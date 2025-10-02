@@ -551,6 +551,38 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
+
+        {/* Receipt Modal */}
+        {receiptModalOpen && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="glass-strong max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-6">
+                  <h2 className="text-2xl font-bold text-white">Comprovante</h2>
+                  <Button 
+                    onClick={() => setReceiptModalOpen(false)}
+                    variant="outline"
+                    className="text-white border-white/20 hover:bg-white/10"
+                  >
+                    ✕
+                  </Button>
+                </div>
+                
+                <div className="flex justify-center">
+                  <img 
+                    src={receiptImageUrl} 
+                    alt="Comprovante" 
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      toast.error('Erro ao carregar comprovante');
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
