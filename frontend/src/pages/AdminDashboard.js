@@ -118,14 +118,30 @@ const AdminDashboard = () => {
 
   const downloadReceipt = (filename) => {
     if (filename) {
-      const url = `${process.env.REACT_APP_BACKEND_URL}/uploads/${filename}`;
-      // Create a link and trigger download
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
+      const url = `${backendUrl}/api/files/${filename}`;
+      
+      // Try to download using fetch with auth headers
+      const token = localStorage.getItem('token');
+      fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success('Download realizado com sucesso!');
+      })
+      .catch(error => {
+        console.error('Download error:', error);
+        toast.error('Erro ao baixar comprovante');
+      });
     } else {
       toast.error('Comprovante não disponível');
     }
