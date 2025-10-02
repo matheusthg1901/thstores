@@ -280,6 +280,9 @@ const AdminDashboard = () => {
                             {getTransactionTypeLabel(transaction.transaction_type)}
                           </Badge>
                         </td>
+                        <td className="font-mono text-sm">
+                          {transactionUsers[transaction.id]?.account_number || 'Carregando...'}
+                        </td>
                         <td className="font-mono">{transaction.phone_number}</td>
                         <td className="font-semibold">
                           R$ {transaction.amount_paid?.toFixed(2) || '0.00'}
