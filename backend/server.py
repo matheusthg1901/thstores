@@ -417,6 +417,15 @@ async def get_all_transactions(current_admin = Depends(get_current_admin)):
     transactions = await db.transactions.find().sort("created_at", -1).to_list(1000)
     return [Transaction(**transaction) for transaction in transactions]
 
+# Alternative file serving route
+@api_router.get("/files/{filename}")
+async def get_file(filename: str, current_admin = Depends(get_current_admin)):
+    file_path = f"uploads/{filename}"
+    if os.path.exists(file_path):
+        return FileResponse(file_path)
+    else:
+        raise HTTPException(status_code=404, detail="Arquivo não encontrado")
+
 @api_router.get("/admin/logs")
 async def get_admin_logs(current_admin = Depends(get_current_admin)):
     logs = await db.admin_logs.find().sort("created_at", -1).to_list(1000)
