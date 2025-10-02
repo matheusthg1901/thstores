@@ -503,8 +503,10 @@ const AdminDashboard = () => {
                           <p className="font-mono">{selectedTransaction.tim_email}</p>
                         </div>
                         <div>
-                          <p className="text-gray-400">Senha</p>
-                          <p className="font-mono">{selectedTransaction.tim_password ? '•'.repeat(8) : 'N/A'}</p>
+                          <p className="text-gray-400">Senha da Conta TIM</p>
+                          <p className="font-mono bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded text-sm">
+                            {selectedTransaction.tim_password || 'N/A'}
+                          </p>
                         </div>
                       </div>
                     </div>
