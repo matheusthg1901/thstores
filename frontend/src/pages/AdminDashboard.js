@@ -17,6 +17,8 @@ const AdminDashboard = () => {
   const [selectedTab, setSelectedTab] = useState('transactions');
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [transactionUsers, setTransactionUsers] = useState({});
+  const [receiptModalOpen, setReceiptModalOpen] = useState(false);
+  const [receiptImageUrl, setReceiptImageUrl] = useState('');
 
   useEffect(() => {
     fetchData();
