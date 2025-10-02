@@ -39,7 +39,6 @@ api_router = APIRouter(prefix="/api")
 
 # Create uploads directory
 os.makedirs("uploads", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 class OperatorType(str, Enum):
     VIVO = "vivo"
