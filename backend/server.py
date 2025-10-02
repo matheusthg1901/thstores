@@ -195,6 +195,7 @@ async def register_user(user_data: UserCreate):
         "name": user_data.name,
         "email": user_data.email,
         "phone": user_data.phone,
+        "account_number": user_data.account_number,
         "password": hashed_password,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
