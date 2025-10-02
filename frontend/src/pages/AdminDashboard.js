@@ -628,12 +628,27 @@ const AdminDashboard = () => {
                     src={receiptImageUrl} 
                     alt="Comprovante de Pagamento" 
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                    onLoad={() => console.log('Receipt loaded successfully')}
+                    onLoad={() => {
+                      console.log('Receipt loaded successfully');
+                      toast.success('Comprovante carregado!');
+                    }}
                     onError={(e) => {
                       console.error('Error loading receipt:', receiptImageUrl);
                       e.target.style.display = 'none';
-                      e.target.parentElement.innerHTML = '<div class="text-center text-red-400 p-8"><p>Erro ao carregar comprovante</p><p class="text-sm text-gray-400 mt-2">URL: ' + receiptImageUrl + '</p><p class="text-xs text-gray-500 mt-1">Verifique se o arquivo existe no servidor</p></div>';
-                      toast.error('Erro ao carregar comprovante');
+                      e.target.parentElement.innerHTML = `
+                        <div class="text-center text-red-400 p-8">
+                          <p class="text-lg mb-4">⚠️ Erro ao carregar comprovante</p>
+                          <button 
+                            onclick="window.open('${receiptImageUrl}', '_blank')" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-4"
+                          >
+                            Tentar Abrir em Nova Aba
+                          </button>
+                          <p class="text-sm text-gray-400 mt-2">URL: ${receiptImageUrl}</p>
+                          <p class="text-xs text-gray-500 mt-1">Clique no botão acima ou use a opção "Baixar"</p>
+                        </div>
+                      `;
+                      toast.error('Erro ao carregar imagem - Use o botão de download');
                     }}
                   />
                 </div>
