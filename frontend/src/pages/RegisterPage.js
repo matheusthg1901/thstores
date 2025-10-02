@@ -145,6 +145,24 @@ const RegisterPage = () => {
               </div>
               
               <div className="space-y-2">
+                <Label htmlFor="account_number" className="text-white flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span>Número de Registro da Conta</span>
+                </Label>
+                <Input
+                  id="account_number"
+                  name="account_number"
+                  type="text"
+                  value={formData.account_number}
+                  onChange={handleChange}
+                  required
+                  className="input-premium"
+                  placeholder="Ex: ACC123456"
+                  data-testid="register-account-number-input"
+                />
+              </div>
+              
+              <div className="space-y-2">
                 <Label htmlFor="password" className="text-white flex items-center space-x-2">
                   <Lock className="w-4 h-4" />
                   <span>Senha</span>
