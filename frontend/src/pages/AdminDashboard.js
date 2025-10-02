@@ -515,10 +515,12 @@ const AdminDashboard = () => {
                   {/* Account password for bill payment */}
                   {selectedTransaction.account_password && (
                     <div className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                      <h3 className="font-semibold mb-2">Dados da Conta</h3>
+                      <h3 className="font-semibold mb-2">Dados da Conta {selectedTransaction.operator === 'tim' ? 'TIM' : 'Claro'}</h3>
                       <div className="text-sm">
                         <p className="text-gray-400">Senha da Conta da Operadora</p>
-                        <p className="font-mono">{selectedTransaction.account_password}</p>
+                        <p className="font-mono bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded">
+                          {selectedTransaction.account_password}
+                        </p>
                       </div>
                     </div>
                   )}
