@@ -611,9 +611,11 @@ const AdminDashboard = () => {
                     src={receiptImageUrl} 
                     alt="Comprovante de Pagamento" 
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onLoad={() => console.log('Receipt loaded successfully')}
                     onError={(e) => {
+                      console.error('Error loading receipt:', receiptImageUrl);
                       e.target.style.display = 'none';
-                      e.target.parentElement.innerHTML = '<div class="text-center text-red-400 p-8"><p>Erro ao carregar comprovante</p><p class="text-sm text-gray-400 mt-2">O arquivo pode estar corrompido ou não existe</p></div>';
+                      e.target.parentElement.innerHTML = '<div class="text-center text-red-400 p-8"><p>Erro ao carregar comprovante</p><p class="text-sm text-gray-400 mt-2">URL: ' + receiptImageUrl + '</p><p class="text-xs text-gray-500 mt-1">Verifique se o arquivo existe no servidor</p></div>';
                       toast.error('Erro ao carregar comprovante');
                     }}
                   />
