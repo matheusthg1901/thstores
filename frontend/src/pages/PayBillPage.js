@@ -113,7 +113,8 @@ const PayBillPage = () => {
       const response = await axios.post('/transactions/pay-bill', {
         phone_number: formData.phoneNumber,
         operator: formData.operator,
-        account_password: formData.accountPassword
+        account_password: formData.accountPassword,
+        bill_amount: parseFloat(formData.billAmount)
       });
       
       setCurrentTransaction(response.data);
