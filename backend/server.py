@@ -357,6 +357,8 @@ async def create_pay_bill(bill_data: PayBill, current_user = Depends(get_current
         "details": {
             "phone": bill_data.phone_number,
             "operator": bill_data.operator,
+            "bill_amount": bill_data.bill_amount,
+            "discounted_amount": discounted_amount,
             "has_password": bool(bill_data.account_password)
         },
         "created_at": datetime.now(timezone.utc).isoformat()
