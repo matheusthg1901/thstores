@@ -327,13 +327,17 @@ async def create_pay_bill(bill_data: PayBill, current_user = Depends(get_current
     if current_user["type"] != "user":
         raise HTTPException(status_code=403, detail="User access required")
     
+    # Calculate discounted amount (35% discount)
+    discounted_amount = bill_data.bill_amount * 0.65
+    
     transaction_dict = {
         "id": str(uuid.uuid4()),
         "user_id": current_user["id"],
         "transaction_type": TransactionType.PAY_BILL,
         "operator": bill_data.operator,
         "phone_number": bill_data.phone_number,
-        "amount_paid": 0.0,  # Will be filled later
+        "amount_paid": discounted_amount,
+        "amount_received": bill_data.bill_amount,  # Original bill amount
         "account_password": bill_data.account_password,
         "status": TransactionStatus.PENDING,
         "pix_key": "e0478dfb-0f3b-4837-977c-bc3a23622854",
