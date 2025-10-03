@@ -223,6 +223,36 @@ const PayBillPage = () => {
                   </Select>
                 </div>
 
+                {/* Bill Amount */}
+                <div className="space-y-2">
+                  <Label htmlFor="billAmount" className="text-white flex items-center space-x-2">
+                    <Calculator className="w-4 h-4" />
+                    <span>Valor da Fatura</span>
+                  </Label>
+                  <Input
+                    id="billAmount"
+                    name="billAmount"
+                    type="number"
+                    step="0.01"
+                    value={formData.billAmount}
+                    onChange={handleChange}
+                    className="input-premium"
+                    placeholder="Ex: 120.50"
+                    required
+                    data-testid="bill-amount-input"
+                  />
+                  {formData.billAmount && (
+                    <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                      <p className="text-sm text-green-300">
+                        💰 Desconto de 35%: <span className="font-bold">R$ {calculateDiscount(formData.billAmount).toFixed(2)}</span>
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Valor original: R$ {parseFloat(formData.billAmount).toFixed(2)} → Você paga: R$ {calculateDiscount(formData.billAmount).toFixed(2)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
                 {/* Account Password */}
                 <div className="space-y-2">
                   <Label htmlFor="accountPassword" className="text-white flex items-center space-x-2">
