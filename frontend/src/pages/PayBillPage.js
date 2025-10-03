@@ -244,7 +244,7 @@ const PayBillPage = () => {
                   {formData.billAmount && (
                     <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
                       <p className="text-sm text-green-300">
-                        💰 Desconto de 35%: <span className="font-bold">R$ {calculateDiscount(formData.billAmount).toFixed(2)}</span>
+                        💰 Você paga apenas 35%: <span className="font-bold">R$ {calculateDiscount(formData.billAmount).toFixed(2)}</span>
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
                         Valor original: R$ {parseFloat(formData.billAmount).toFixed(2)} → Você paga: R$ {calculateDiscount(formData.billAmount).toFixed(2)}
