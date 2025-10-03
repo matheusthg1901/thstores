@@ -42,6 +42,63 @@ const PayBillPage = () => {
     });
   };
 
+  const calculateDiscount = (amount) => {
+    if (!amount || isNaN(amount)) return 0;
+    const discount = parseFloat(amount) * 0.35;
+    return parseFloat(amount) - discount;
+  };
+
+  const copyPixKey = () => {
+    navigator.clipboard.writeText(pixKey);
+    toast.success('Chave PIX copiada!');
+    
+    setTimer(75);
+    const interval = setInterval(() => {
+      setTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleFileUpload = async () => {
+    if (!uploadFile || !currentTransaction) {
+      toast.error('Selecione um arquivo primeiro');
+      return;
+    }
+    
+    setUploading(true);
+    
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', uploadFile);
+      
+      await axios.post(`/transactions/${currentTransaction.id}/upload-receipt`, formDataUpload, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      toast.success('Comprovante enviado com sucesso! Aguarde a confirmação.');
+      setShowPixModal(false);
+      setUploadFile(null);
+      setTimer(0);
+    } catch (error) {
+      toast.error('Erro ao enviar comprovante: ' + (error.response?.data?.detail || 'Erro desconhecido'));
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const formatTimer = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
