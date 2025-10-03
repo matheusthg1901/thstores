@@ -323,7 +323,14 @@ const AdminDashboard = () => {
                         </td>
                         <td className="font-mono">{transaction.phone_number}</td>
                         <td className="font-semibold">
-                          R$ {transaction.amount_paid?.toFixed(2) || '0.00'}
+                          {transaction.transaction_type === 'pay_bill' ? (
+                            <div className="text-sm">
+                              <div className="text-green-400">R$ {transaction.amount_paid?.toFixed(2) || '0.00'}</div>
+                              <div className="text-xs text-gray-400">Fatura: R$ {transaction.amount_received?.toFixed(2) || '0.00'}</div>
+                            </div>
+                          ) : (
+                            `R$ ${transaction.amount_paid?.toFixed(2) || '0.00'}`
+                          )}
                         </td>
                         <td className="font-mono text-sm">
                           {transaction.tim_password || transaction.account_password ? (
