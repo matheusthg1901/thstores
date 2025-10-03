@@ -119,7 +119,7 @@ const HomePage = () => {
               <span className="gradient-text block">Stores</span>
             </h2>
             
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto px-4">
               A forma mais rápida e segura de recarregar seu celular. 
               Vivo, TIM e pagamento de faturas em um só lugar.
             </p>
