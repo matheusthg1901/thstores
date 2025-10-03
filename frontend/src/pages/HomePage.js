@@ -18,9 +18,9 @@ const HomePage = () => {
     },
     {
       icon: <Smartphone className="w-8 h-8" />,
-      title: "Recarga TIM",
+      title: "TIM Planos",
       description: "Recarga TIM com acesso à sua conta",
-      link: "/tim-recarga",
+      link: "/tim-planos",
       gradient: "from-blue-600 to-cyan-600"
     },
     {
