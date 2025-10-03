@@ -33,7 +33,7 @@ const ClaroRechargePage = () => {
     }
     
     try {
-      const response = await axios.post('/transactions/vivo-recharge', {
+      const response = await axios.post('/transactions/claro-recharge', {
         phone_number: phoneNumber,
         amount_paid: packageData.paid,
         amount_received: packageData.received
