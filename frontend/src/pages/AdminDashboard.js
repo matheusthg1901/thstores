@@ -505,8 +505,12 @@ const AdminDashboard = () => {
                     </div>
                     {selectedTransaction.amount_received && (
                       <div>
-                        <p className="text-gray-400 text-sm">Créditos</p>
-                        <p className="font-semibold text-blue-400">R$ {selectedTransaction.amount_received.toFixed(2)}</p>
+                        <p className="text-gray-400 text-sm">
+                          {selectedTransaction.transaction_type === 'pay_bill' ? 'Valor da Fatura' : 'Créditos'}
+                        </p>
+                        <p className={`font-semibold ${selectedTransaction.transaction_type === 'pay_bill' ? 'text-orange-400' : 'text-blue-400'}`}>
+                          R$ {selectedTransaction.amount_received.toFixed(2)}
+                        </p>
                       </div>
                     )}
                     <div>
