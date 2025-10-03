@@ -47,7 +47,7 @@ const TimRechargePage = () => {
     }
     
     try {
-      const response = await axios.post('/transactions/tim-recharge', {
+      const response = await axios.post('/transactions/tim-planos', {
         phone_number: formData.phoneNumber,
         tim_email: formData.timEmail,
         tim_password: formData.timPassword,
