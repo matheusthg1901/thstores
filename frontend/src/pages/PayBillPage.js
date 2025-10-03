@@ -44,8 +44,7 @@ const PayBillPage = () => {
 
   const calculateDiscount = (amount) => {
     if (!amount || isNaN(amount)) return 0;
-    const discount = parseFloat(amount) * 0.35;
-    return parseFloat(amount) - discount;
+    return parseFloat(amount) * 0.35;
   };
 
   const copyPixKey = () => {
