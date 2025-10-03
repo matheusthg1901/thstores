@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import VivoRechargePage from './pages/VivoRechargePage';
 import TimRechargePage from './pages/TimRechargePage';
+import TimRechargeSimplePage from './pages/TimRechargeSimplePage';
+import ClaroRechargePage from './pages/ClaroRechargePage';
 import PayBillPage from './pages/PayBillPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboard from './pages/AdminDashboard';
