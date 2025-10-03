@@ -140,7 +140,7 @@ const TimRechargePage = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           {/* Phone Number Input */}
           <Card className="glass-strong border-0 text-white">
             <CardHeader>
