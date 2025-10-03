@@ -310,6 +310,105 @@ const PayBillPage = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* PIX Payment Modal */}
+        <Dialog open={showPixModal} onOpenChange={setShowPixModal}>
+          <DialogContent className="glass-strong border-0 text-white max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center text-2xl gradient-text">
+                Pagamento da Fatura com Desconto
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-6">
+              <div className="p-4 bg-white/5 rounded-lg">
+                <h3 className="font-semibold mb-2">Detalhes do Pagamento</h3>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Telefone:</span>
+                    <span>{formData.phoneNumber}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Operadora:</span>
+                    <span className="capitalize">{formData.operator}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Valor original:</span>
+                    <span className="line-through text-red-400">R$ {parseFloat(formData.billAmount || 0).toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Valor com desconto (35%):</span>
+                    <span className="text-green-400 font-semibold text-lg">R$ {calculateDiscount(formData.billAmount || 0).toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <Label className="text-white">Chave PIX (Copia e Cola)</Label>
+                <div className="flex space-x-2">
+                  <Input
+                    value={pixKey}
+                    readOnly
+                    className="input-premium font-mono text-sm"
+                  />
+                  <Button 
+                    onClick={copyPixKey}
+                    className="btn-premium"
+                    data-testid="copy-pix-button"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              {timer > 0 && (
+                <div className="text-center p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                  <div className="flex items-center justify-center space-x-2 text-orange-400">
+                    <Clock className="w-5 h-5" />
+                    <span>Tempo para enviar comprovante:</span>
+                  </div>
+                  <div className="timer-display text-3xl mt-2">
+                    {formatTimer(timer)}
+                  </div>
+                </div>
+              )}
+              
+              <div className="space-y-4">
+                <Label className="text-white">Enviar Comprovante</Label>
+                <Input
+                  type="file"
+                  accept="image/*,.pdf"
+                  onChange={(e) => setUploadFile(e.target.files[0])}
+                  className="input-premium"
+                  data-testid="upload-receipt-input"
+                />
+                
+                <Button 
+                  onClick={handleFileUpload}
+                  disabled={!uploadFile || uploading}
+                  className="w-full btn-success"
+                  data-testid="upload-receipt-button"
+                >
+                  {uploading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="spinner w-4 h-4"></div>
+                      <span>Enviando...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <Upload className="w-4 h-4" />
+                      <span>Enviar Comprovante</span>
+                    </div>
+                  )}
+                </Button>
+              </div>
+              
+              <div className="text-xs text-gray-400 text-center">
+                Após o envio do comprovante, sua fatura será paga em até 24 horas.
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
