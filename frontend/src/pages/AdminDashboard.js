@@ -294,8 +294,8 @@ const AdminDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full table-premium">
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <table className="w-full table-premium min-w-[800px]">
                   <thead>
                     <tr>
                       <th className="text-left">Data</th>
