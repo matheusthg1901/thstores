@@ -35,7 +35,7 @@ const TimRechargeSimplePage = () => {
     }
     
     try {
-      const response = await axios.post('/transactions/vivo-recharge', {
+      const response = await axios.post('/transactions/tim-recharge', {
         phone_number: phoneNumber,
         amount_paid: packageData.paid,
         amount_received: packageData.received
