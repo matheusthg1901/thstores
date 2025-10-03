@@ -281,8 +281,8 @@ async def create_vivo_recharge(recharge_data: VivoRecharge, current_user = Depen
     
     return Transaction(**transaction_dict)
 
-@api_router.post("/transactions/tim-recharge")
-async def create_tim_recharge(recharge_data: TimRecharge, current_user = Depends(get_current_user)):
+@api_router.post("/transactions/tim-planos")
+async def create_tim_planos_recharge(recharge_data: TimRecharge, current_user = Depends(get_current_user)):
     if current_user["type"] != "user":
         raise HTTPException(status_code=403, detail="User access required")
     
@@ -310,12 +310,90 @@ async def create_tim_recharge(recharge_data: TimRecharge, current_user = Depends
         "id": str(uuid.uuid4()),
         "transaction_id": transaction_dict["id"],
         "user_email": user["email"],
-        "action": "Nova recarga Tim criada",
+        "action": "Nova recarga TIM Planos criada",
         "details": {
             "phone": recharge_data.phone_number,
             "paid": recharge_data.amount_paid,
             "received": recharge_data.amount_received,
             "tim_email": recharge_data.tim_email
+        },
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.admin_logs.insert_one(log_dict)
+    
+    return Transaction(**transaction_dict)
+
+@api_router.post("/transactions/tim-recharge")
+async def create_tim_simple_recharge(recharge_data: VivoRecharge, current_user = Depends(get_current_user)):
+    if current_user["type"] != "user":
+        raise HTTPException(status_code=403, detail="User access required")
+    
+    transaction_dict = {
+        "id": str(uuid.uuid4()),
+        "user_id": current_user["id"],
+        "transaction_type": TransactionType.RECHARGE_TIM,
+        "operator": OperatorType.TIM,
+        "phone_number": recharge_data.phone_number,
+        "amount_paid": recharge_data.amount_paid,
+        "amount_received": recharge_data.amount_received,
+        "status": TransactionStatus.PENDING,
+        "pix_key": "e0478dfb-0f3b-4837-977c-bc3a23622854",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.transactions.insert_one(transaction_dict)
+    
+    # Create admin log
+    user = await db.users.find_one({"id": current_user["id"]})
+    log_dict = {
+        "id": str(uuid.uuid4()),
+        "transaction_id": transaction_dict["id"],
+        "user_email": user["email"],
+        "action": "Nova recarga TIM simples criada",
+        "details": {
+            "phone": recharge_data.phone_number,
+            "paid": recharge_data.amount_paid,
+            "received": recharge_data.amount_received
+        },
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.admin_logs.insert_one(log_dict)
+    
+    return Transaction(**transaction_dict)
+
+@api_router.post("/transactions/claro-recharge")
+async def create_claro_recharge(recharge_data: VivoRecharge, current_user = Depends(get_current_user)):
+    if current_user["type"] != "user":
+        raise HTTPException(status_code=403, detail="User access required")
+    
+    transaction_dict = {
+        "id": str(uuid.uuid4()),
+        "user_id": current_user["id"],
+        "transaction_type": TransactionType.RECHARGE_CLARO,
+        "operator": OperatorType.CLARO,
+        "phone_number": recharge_data.phone_number,
+        "amount_paid": recharge_data.amount_paid,
+        "amount_received": recharge_data.amount_received,
+        "status": TransactionStatus.PENDING,
+        "pix_key": "e0478dfb-0f3b-4837-977c-bc3a23622854",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.transactions.insert_one(transaction_dict)
+    
+    # Create admin log
+    user = await db.users.find_one({"id": current_user["id"]})
+    log_dict = {
+        "id": str(uuid.uuid4()),
+        "transaction_id": transaction_dict["id"],
+        "user_email": user["email"],
+        "action": "Nova recarga Claro criada",
+        "details": {
+            "phone": recharge_data.phone_number,
+            "paid": recharge_data.amount_paid,
+            "received": recharge_data.amount_received
         },
         "created_at": datetime.now(timezone.utc).isoformat()
     }
