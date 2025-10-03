@@ -55,12 +55,12 @@ const HomePage = () => {
       {/* Header */}
       <header className="glass border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center">
-                <Phone className="w-6 h-6 text-white" />
+          <div className="flex justify-between items-center py-4 sm:py-6">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center">
+                <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold gradient-text">RECARGAS TH STORES</h1>
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text">RECARGAS TH STORES</h1>
             </div>
             
             <div className="flex items-center space-x-4">
