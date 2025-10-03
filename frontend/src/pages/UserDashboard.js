@@ -204,7 +204,7 @@ const UserDashboard = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               <Link to="/vivo-recarga">
                 <Button className="w-full h-20 glass hover:bg-white/10 border border-white/10 text-left" variant="ghost">
                   <div className="flex items-center space-x-4">
