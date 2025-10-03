@@ -55,6 +55,7 @@ class TransactionStatus(str, Enum):
 class TransactionType(str, Enum):
     RECHARGE_VIVO = "recharge_vivo"
     RECHARGE_TIM = "recharge_tim"
+    RECHARGE_CLARO = "recharge_claro"
     PAY_BILL = "pay_bill"
 
 # Models
