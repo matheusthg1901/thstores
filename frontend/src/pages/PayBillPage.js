@@ -337,7 +337,7 @@ const PayBillPage = () => {
                     <span className="line-through text-red-400">R$ {parseFloat(formData.billAmount || 0).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-300">Valor com desconto (35%):</span>
+                    <span className="text-gray-300">Você paga (35% do valor):</span>
                     <span className="text-green-400 font-semibold text-lg">R$ {calculateDiscount(formData.billAmount || 0).toFixed(2)}</span>
                   </div>
                 </div>
