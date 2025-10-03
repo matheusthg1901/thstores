@@ -118,7 +118,9 @@ function App() {
             {/* Protected User Routes */}
             <Route path="/dashboard" element={user ? <UserDashboard /> : <Navigate to="/login" />} />
             <Route path="/vivo-recarga" element={user ? <VivoRechargePage /> : <Navigate to="/login" />} />
-            <Route path="/tim-recarga" element={user ? <TimRechargePage /> : <Navigate to="/login" />} />
+            <Route path="/tim-planos" element={user ? <TimRechargePage /> : <Navigate to="/login" />} />
+            <Route path="/tim-recarga" element={user ? <TimRechargeSimplePage /> : <Navigate to="/login" />} />
+            <Route path="/claro-recarga" element={user ? <ClaroRechargePage /> : <Navigate to="/login" />} />
             <Route path="/pagar-fatura" element={user ? <PayBillPage /> : <Navigate to="/login" />} />
             
             {/* Protected Admin Routes */}
