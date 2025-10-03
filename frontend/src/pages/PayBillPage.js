@@ -15,9 +15,17 @@ const PayBillPage = () => {
   const [formData, setFormData] = useState({
     phoneNumber: '',
     operator: '',
-    accountPassword: ''
+    accountPassword: '',
+    billAmount: ''
   });
   const [loading, setLoading] = useState(false);
+  const [showPixModal, setShowPixModal] = useState(false);
+  const [currentTransaction, setCurrentTransaction] = useState(null);
+  const [timer, setTimer] = useState(0);
+  const [uploadFile, setUploadFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  
+  const pixKey = "e0478dfb-0f3b-4837-977c-bc3a23622854";
 
   const handleChange = (e) => {
     setFormData({
