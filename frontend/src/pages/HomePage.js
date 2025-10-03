@@ -156,7 +156,7 @@ const HomePage = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
             {features.map((feature, index) => (
               <Card key={index} className="glass-strong card-hover border-0 text-white">
                 <CardHeader className="text-center">
@@ -198,7 +198,7 @@ const HomePage = () => {
             </h3>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
             {advantages.map((advantage, index) => (
               <div key={index} className="text-center">
                 <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center mb-4">
