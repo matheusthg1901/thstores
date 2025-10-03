@@ -233,6 +233,34 @@ const UserDashboard = () => {
                 </Button>
               </Link>
               
+              <Link to="/tim-recarga">
+                <Button className="w-full h-20 glass hover:bg-white/10 border border-white/10 text-left" variant="ghost">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                      <Smartphone className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white">Recarga TIM</p>
+                      <p className="text-sm text-gray-300">Recarga simples TIM</p>
+                    </div>
+                  </div>
+                </Button>
+              </Link>
+              
+              <Link to="/claro-recarga">
+                <Button className="w-full h-20 glass hover:bg-white/10 border border-white/10 text-left" variant="ghost">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
+                      <Smartphone className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white">Recarga Claro</p>
+                      <p className="text-sm text-gray-300">Recarga Claro</p>
+                    </div>
+                  </div>
+                </Button>
+              </Link>
+              
               <Link to="/pagar-fatura">
                 <Button className="w-full h-20 glass hover:bg-white/10 border border-white/10 text-left" variant="ghost">
                   <div className="flex items-center space-x-4">
@@ -241,7 +269,7 @@ const UserDashboard = () => {
                     </div>
                     <div>
                       <p className="font-semibold text-white">Pagar Fatura</p>
-                      <p className="text-sm text-gray-300">TIM e Claro</p>
+                      <p className="text-sm text-gray-300">TIM e Claro (35% desconto)</p>
                     </div>
                   </div>
                 </Button>
