@@ -231,7 +231,7 @@ const HomePage = () => {
               <Link to="/admin-login" className="text-gray-400 hover:text-white transition-colors">
                 Admin
               </Link>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://wa.me/5535999735466?text=ola%20tenho%20duvidas%20sobre%20o%20painel%3A%20" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 Suporte
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
