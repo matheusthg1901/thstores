@@ -102,6 +102,7 @@ class PayBill(BaseModel):
     phone_number: str
     operator: OperatorType
     account_password: str
+    bill_amount: float
 
 class Transaction(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
