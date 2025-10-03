@@ -45,6 +45,7 @@ const UserDashboard = () => {
     const types = {
       recharge_vivo: 'Recarga Vivo',
       recharge_tim: 'Recarga TIM',
+      recharge_claro: 'Recarga Claro',
       pay_bill: 'Pagamento de Fatura'
     };
     return types[type] || type;
