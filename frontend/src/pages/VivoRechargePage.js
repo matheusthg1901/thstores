@@ -128,7 +128,7 @@ const VivoRechargePage = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-6">
           {/* Phone Number Input */}
           <Card className="glass-strong border-0 text-white">
             <CardHeader>
