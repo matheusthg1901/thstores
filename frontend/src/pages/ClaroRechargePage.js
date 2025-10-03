@@ -122,7 +122,7 @@ const ClaroRechargePage = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-6">
           <Card className="glass-strong border-0 text-white">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
