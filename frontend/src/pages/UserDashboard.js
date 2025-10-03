@@ -219,15 +219,15 @@ const UserDashboard = () => {
                 </Button>
               </Link>
               
-              <Link to="/tim-recarga">
+              <Link to="/tim-planos">
                 <Button className="w-full h-20 glass hover:bg-white/10 border border-white/10 text-left" variant="ghost">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
                       <Smartphone className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-white">Recarga TIM</p>
-                      <p className="text-sm text-gray-300">Recarregue seu TIM</p>
+                      <p className="font-semibold text-white">TIM Planos</p>
+                      <p className="text-sm text-gray-300">Recarga com conta TIM</p>
                     </div>
                   </div>
                 </Button>
