@@ -231,12 +231,109 @@ code {
 @media (max-width: 768px) {
   .glass {
     border-radius: 12px;
-    margin: 16px;
+    margin: 8px;
+  }
+  
+  .glass-strong {
+    margin: 8px;
+    border-radius: 16px;
   }
   
   .btn-premium {
-    padding: 10px 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  
+  .input-premium {
+    padding: 16px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  
+  /* Larger touch targets */
+  button {
+    min-height: 48px;
+    padding: 12px 16px;
+  }
+  
+  /* Better spacing for mobile */
+  .space-y-4 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 2rem !important;
+  }
+  
+  /* Responsive text sizes */
+  h1 {
+    font-size: 2rem !important;
+  }
+  
+  h2 {
+    font-size: 1.75rem !important;
+  }
+  
+  h3 {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Card hover effects disabled on mobile */
+  .card-hover:hover {
+    transform: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  body {
     font-size: 14px;
+  }
+  
+  .glass, .glass-strong {
+    margin: 4px;
+    padding: 12px;
+  }
+  
+  .btn-premium {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+  }
+  
+  .input-premium {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+  }
+  
+  /* Stack elements vertically on very small screens */
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  /* Timer display responsive */
+  .timer-display {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Modal adjustments */
+  .max-w-md {
+    max-width: 95vw !important;
+    margin: 0 8px !important;
+  }
+  
+  .max-w-2xl {
+    max-width: 95vw !important;
+    margin: 0 8px !important;
+  }
+  
+  .max-w-4xl {
+    max-width: 95vw !important;
+    margin: 0 8px !important;
   }
 }
 
