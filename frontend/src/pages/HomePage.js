@@ -114,7 +114,7 @@ const HomePage = () => {
               </div>
             </div>
             
-            <h2 className="text-6xl md:text-7xl font-bold text-white leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
               Recargas TH
               <span className="gradient-text block">Stores</span>
             </h2>
