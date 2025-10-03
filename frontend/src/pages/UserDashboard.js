@@ -55,6 +55,7 @@ const UserDashboard = () => {
     const icons = {
       recharge_vivo: <Phone className="w-5 h-5 text-purple-400" />,
       recharge_tim: <Smartphone className="w-5 h-5 text-blue-400" />,
+      recharge_claro: <Smartphone className="w-5 h-5 text-red-400" />,
       pay_bill: <Building className="w-5 h-5 text-green-400" />
     };
     return icons[type] || <CreditCard className="w-5 h-5" />;
