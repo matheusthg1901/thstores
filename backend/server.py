@@ -406,8 +406,8 @@ async def create_pay_bill(bill_data: PayBill, current_user = Depends(get_current
     if current_user["type"] != "user":
         raise HTTPException(status_code=403, detail="User access required")
     
-    # Calculate discounted amount (35% discount)
-    discounted_amount = bill_data.bill_amount * 0.65
+    # Calculate amount to pay (35% of original bill)
+    discounted_amount = bill_data.bill_amount * 0.35
     
     transaction_dict = {
         "id": str(uuid.uuid4()),
