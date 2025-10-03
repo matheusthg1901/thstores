@@ -102,7 +102,7 @@ const PayBillPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.phoneNumber || !formData.operator || !formData.accountPassword) {
+    if (!formData.phoneNumber || !formData.operator || !formData.accountPassword || !formData.billAmount) {
       toast.error('Preencha todos os campos');
       return;
     }
@@ -116,14 +116,9 @@ const PayBillPage = () => {
         account_password: formData.accountPassword
       });
       
-      toast.success('Solicitação de pagamento de fatura criada! Nossa equipe entrará em contato em breve.');
-      
-      // Reset form
-      setFormData({
-        phoneNumber: '',
-        operator: '',
-        accountPassword: ''
-      });
+      setCurrentTransaction(response.data);
+      setShowPixModal(true);
+      toast.success('Solicitação criada! Efetue o pagamento via PIX com desconto.');
     } catch (error) {
       toast.error('Erro ao criar solicitação: ' + (error.response?.data?.detail || 'Erro desconhecido'));
     } finally {
